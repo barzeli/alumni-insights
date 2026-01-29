@@ -1,0 +1,382 @@
+import { useMemo, useRef } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "../utils/createPageUrl";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { Button } from "../components/ui/button";
+import {
+  GraduationCap,
+  Upload,
+  AlertCircle,
+  School,
+  ShieldCheck,
+} from "lucide-react";
+import StatCard from "../components/survey/StatCard";
+import DataTable from "../components/survey/DataTable";
+import ChartInfoButton from "../components/survey/ChartInfoButton";
+import { useSurveyData } from "../hooks/useSurveyData";
+import {
+  ChartExportButton,
+  TableExportButton,
+  PageExportButton,
+} from "../components/export/ExportButton";
+import {
+  getValue,
+  getName,
+  getCohort,
+  getStatus,
+} from "../components/survey/surveyDataHelpers";
+import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ViewContactsButton from "../components/survey/ViewContactsButton";
+
+export default function Atuda() {
+  const { surveyData, hasSurveyData } = useSurveyData();
+  const chartRef1 = useRef(null);
+  const chartRef2 = useRef(null);
+
+  const atudaData = useMemo(() => {
+    if (!hasSurveyData) return null;
+
+    const atudaim = surveyData.filter((row) => {
+      const status = getStatus(row);
+      return status && status.includes("עתודאי");
+    });
+
+    // Stat: בלימודים (אינדקס 25 מכיל "לימודים" או "דח"ש")
+    const inStudies = atudaim.filter((row) => {
+      const stage = getValue(row, "atuda_stage") || "";
+      return stage.includes("לימודים") || stage.includes('דח"ש');
+    });
+
+    // Stat: בשירות (אינדקס 25 מכיל "סדיר", "קבע" או "חובה")
+    const inService = atudaim.filter((row) => {
+      const stage = getValue(row, "atuda_stage") || "";
+      return (
+        stage.includes("סדיר") ||
+        stage.includes("קבע") ||
+        stage.includes("חובה")
+      );
+    });
+
+    // גרף: התפלגות שלבים (אינדקס 25)
+    const stageCounts = {};
+    const stageRespondents = {};
+    atudaim.forEach((row) => {
+      const stage = getValue(row, "atuda_stage");
+      if (stage && stage.trim()) {
+        stageCounts[stage] = (stageCounts[stage] || 0) + 1;
+        if (!stageRespondents[stage]) stageRespondents[stage] = [];
+        stageRespondents[stage].push({
+          name: getName(row),
+          cohort: getCohort(row),
+        });
+      }
+    });
+    const stageData = Object.entries(stageCounts)
+      .sort(([, a], [, b]) => b - a)
+      .map(([stage, count]) => ({
+        stage,
+        count,
+        respondents: stageRespondents[stage] || [],
+      }));
+
+    // גרף: התפלגות מחזורים (אינדקס 4)
+    const cohortCounts = {};
+    const cohortRespondents = {};
+    atudaim.forEach((row) => {
+      const cohort = getCohort(row);
+      if (cohort && cohort !== "-") {
+        cohortCounts[cohort] = (cohortCounts[cohort] || 0) + 1;
+        if (!cohortRespondents[cohort]) cohortRespondents[cohort] = [];
+        cohortRespondents[cohort].push({ name: getName(row), cohort: cohort });
+      }
+    });
+    const cohortData = Object.entries(cohortCounts).map(([cohort, count]) => ({
+      cohort,
+      count,
+      respondents: cohortRespondents[cohort] || [],
+    }));
+
+    // טבלה מאוחדת - Merged Columns (Fallback Logic)
+    const tableData = atudaim.map((row) => {
+      // מוסד אקדמי משולב: בדוק 26, אם ריק קח 34
+      const institution =
+        getValue(row, "atuda_institution") ||
+        getValue(row, "atuda_mil_institution") ||
+        "-";
+
+      // פקולטה משולבת: בדוק 27, אם ריק קח 35
+      const faculty =
+        getValue(row, "atuda_faculty") ||
+        getValue(row, "atuda_mil_faculty") ||
+        "-";
+
+      // מסלול משולב: בדוק 28, אם ריק קח 36
+      const track =
+        getValue(row, "atuda_track") || getValue(row, "atuda_mil_track") || "-";
+
+      return {
+        full_name: getName(row),
+        cohort: getCohort(row),
+        stage: getValue(row, "atuda_stage") || "-",
+        institution,
+        faculty,
+        track,
+      };
+    });
+
+    return {
+      total: atudaim.length,
+      inStudies: inStudies.length,
+      inService: inService.length,
+      stageData,
+      cohortData,
+      tableData,
+    };
+  }, [surveyData, hasSurveyData]);
+
+  if (!hasSurveyData) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-[#1e3a5f]">עתודאים</h1>
+        <Alert className="bg-amber-50 border-amber-200">
+          <AlertCircle className="h-4 w-4 text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
+          </AlertDescription>
+        </Alert>
+        <Link to={createPageUrl("Overview")}>
+          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
+            <Upload className="w-4 h-4" />
+            העלאת קובץ סקר
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  const tableColumns = [
+    { key: "full_name", label: "שם מלא" },
+    { key: "cohort", label: "מחזור" },
+    { key: "stage", label: "שלב" },
+    { key: "institution", label: "מוסד אקדמי (משולב)" },
+    { key: "faculty", label: "פקולטה (משולבת)" },
+    { key: "track", label: "מסלול (משולב)" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-[#1e3a5f]">עתודאים</h1>
+        <PageExportButton
+          pageData={{
+            שלבים: {
+              data: atudaData.stageData,
+              columns: [
+                { key: "stage", label: "שלב" },
+                { key: "count", label: "מספר" },
+              ],
+            },
+            מחזורים: {
+              data: atudaData.cohortData,
+              columns: [
+                { key: "cohort", label: "מחזור" },
+                { key: "count", label: "מספר" },
+              ],
+            },
+            טבלה: { data: atudaData.tableData, columns: tableColumns },
+          }}
+          pageName="עתודאים"
+        />
+      </div>
+
+      <Alert className="bg-purple-50 border-purple-200">
+        <AlertCircle className="h-4 w-4 text-purple-600" />
+        <AlertDescription className="text-purple-800">
+          שימו לב: העתודאים נספרים בנפרד ולא מופיעים בעמוד החיילים
+        </AlertDescription>
+      </Alert>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <StatCard
+          title="סה״כ עתודאים"
+          value={atudaData.total}
+          icon={GraduationCap}
+          color="purple"
+        />
+        <StatCard
+          title="בלימודים"
+          value={atudaData.inStudies}
+          icon={School}
+          color="blue"
+        />
+        <StatCard
+          title="בשירות"
+          value={atudaData.inService}
+          icon={ShieldCheck}
+          color="green"
+        />
+      </div>
+
+      {/* ניווט לתתי-עמודים */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Link to={createPageUrl("AtudaStudies")}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader>
+              <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                <School className="w-5 h-5" />
+                שלב הלימודים
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-4xl font-bold text-blue-600">
+                  {atudaData.inStudies}
+                </p>
+                <p className="text-gray-600">עתודאים בשלב הלימודים האקדמיים</p>
+                <Button className="w-full mt-4">צפייה בפירוט →</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link to={createPageUrl("AtudaMilitary")}>
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+            <CardHeader>
+              <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5" />
+                השלב הצבאי
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-4xl font-bold text-green-600">
+                  {atudaData.inService}
+                </p>
+                <p className="text-gray-600">עתודאים בשלב השירות הצבאי</p>
+                <Button className="w-full mt-4">צפייה בפירוט →</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-lg text-[#1e3a5f]">
+              התפלגות שלבים
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <ChartInfoButton
+                title="התפלגות שלבים"
+                description="כמות עתודאים בכל שלב במסלול"
+                dataSource="אינדקס 25 - באיזה שלב את.ה"
+                calculation="ספירת עתודאים לפי שלב"
+              />
+              <ChartExportButton
+                chartRef={chartRef1}
+                data={atudaData.stageData}
+                filename="התפלגות_שלבים"
+                dataColumns={[
+                  { key: "stage", label: "שלב" },
+                  { key: "count", label: "מספר" },
+                ]}
+              />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div ref={chartRef1}>
+              {atudaData.stageData.length > 0 ? (
+                <HorizontalBarChart
+                  data={atudaData.stageData}
+                  dataKey="stage"
+                  valueLabel="מספר עתודאים"
+                  singleColor="#7c3aed"
+                  height={Math.max(200, atudaData.stageData.length * 40)}
+                />
+              ) : (
+                <div className="h-[200px] flex items-center justify-center text-gray-500">
+                  אין נתונים
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-lg text-[#1e3a5f]">
+              התפלגות מחזורים
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <ChartInfoButton
+                title="התפלגות מחזורים"
+                description="כמות עתודאים מכל מחזור"
+                dataSource="אינדקס 4 - מחזור"
+                calculation="ספירת עתודאים לפי מחזור"
+              />
+              <ChartExportButton
+                chartRef={chartRef2}
+                data={atudaData.cohortData}
+                filename="עתודאים_לפי_מחזור"
+                dataColumns={[
+                  { key: "cohort", label: "מחזור" },
+                  { key: "count", label: "מספר" },
+                ]}
+              />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div ref={chartRef2}>
+              {atudaData.cohortData.length > 0 ? (
+                <HorizontalBarChart
+                  data={atudaData.cohortData}
+                  dataKey="cohort"
+                  valueLabel="מספר עתודאים"
+                  useCohortColors
+                />
+              ) : (
+                <div className="h-[200px] flex items-center justify-center text-gray-500">
+                  אין נתונים
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-lg text-[#1e3a5f]">
+            רשימת עתודאים מאוחדת
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <ViewContactsButton
+              data={atudaData.tableData}
+              filterLabel="עתודאים"
+            />
+            <TableExportButton
+              data={atudaData.tableData}
+              columns={tableColumns}
+              filename="רשימת_עתודאים"
+            />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <DataTable
+            data={atudaData.tableData}
+            columns={tableColumns}
+            pageSize={15}
+            filterableColumns={["cohort", "stage", "institution"]}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
