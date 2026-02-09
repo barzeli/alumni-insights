@@ -176,11 +176,8 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
     }
   };
 
-  const hasExistingData = localStorage.getItem("surveyData");
-  const canClose = !!hasExistingData;
-
   return (
-    <Dialog open={open} onOpenChange={canClose ? onClose : () => {}}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
         className="max-w-xl [&>button]:hidden overflow-hidden"
         dir="rtl"
@@ -381,15 +378,13 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
         )}
 
         <div className="space-y-2 pt-2 border-t mt-4">
-          {canClose && (
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="w-full h-11 border-gray-300 font-medium"
-            >
-              לדאשבורד
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="w-full h-11 border-gray-300 font-medium"
+          >
+            לדאשבורד
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
