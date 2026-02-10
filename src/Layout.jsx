@@ -150,7 +150,7 @@ export default function Layout({ children, currentPageName }) {
               )}
 
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     className="text-white hover:bg-white/20 gap-2"

@@ -15,7 +15,7 @@ export default function ChartInfoButton({
 }) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <button
           type="button"
           className="h-6 w-6 p-0 text-gray-400 hover:text-[#0891b2] bg-transparent border-none cursor-pointer flex items-center justify-center rounded"
