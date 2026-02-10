@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -28,12 +28,9 @@ import StatCard from "../components/survey/StatCard";
 import GlobalFilters from "../components/survey/GlobalFilters";
 import ChartInfoButton from "../components/survey/ChartInfoButton";
 import ChartTooltip from "../components/charts/ChartTooltip";
-import { useSurveyData } from "../hooks/useSurveyData";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
-import {
-  getCohortBarColors,
-  STATUS_COLORS,
-} from "../components/survey/ChartColors";
+import { getCohortBarColors } from "../components/survey/ChartColors";
+import { useOverviewData } from "../hooks/useOverviewData";
 
 export default function Overview() {
   const {
@@ -42,155 +39,12 @@ export default function Overview() {
     cohortCounts,
     totalGraduates,
     totalCohorts,
-  } = useSurveyData();
-  const [filters, setFilters] = useState({ cohorts: [], pronouns: [] });
+    filters,
+    setFilters,
+    stats,
+  } = useOverviewData();
+
   const [selectedBarData, setSelectedBarData] = useState(null);
-
-  // פונקציות עזר לקריאת נתונים
-  const getCohort = (row) =>
-    row["איזה מחזור ושלוחה היית?"] || row.cohort || "-";
-  const getName = (row) => row["שם מלא"] || row.full_name || "לא ידוע";
-  const getStatus = (row) =>
-    row['מה מצבי מול צה"ל / שירות לאומי'] || row.military_status || "";
-
-  const filteredData = useMemo(() => {
-    if (!hasSurveyData) return [];
-    return surveyData.filter((row) => {
-      const cohortVal = getCohort(row);
-      const pronounVal = row.pronoun || "";
-      const cohortMatch =
-        filters.cohorts.length === 0 || filters.cohorts.includes(cohortVal);
-      const pronounMatch =
-        filters.pronouns.length === 0 || filters.pronouns.includes(pronounVal);
-      return cohortMatch && pronounMatch;
-    });
-  }, [surveyData, hasSurveyData, filters]);
-
-  const stats = useMemo(() => {
-    if (!hasSurveyData || filteredData.length === 0)
-      return {
-        totalRespondents: 0,
-        responseRate: "0",
-        statusCounts: {
-          malshab: 0,
-          soldiers: 0,
-          atuda: 0,
-          released: 0,
-          nationalService: 0,
-        },
-        pieData: [],
-        cohortData: [],
-      };
-
-    // ספירת סטטוסים לפי עמודה H
-    let malshab = 0,
-      soldiers = 0,
-      atuda = 0,
-      released = 0,
-      nationalService = 0;
-
-    filteredData.forEach((row) => {
-      const status = getStatus(row);
-      if (status.includes("מלש")) malshab++;
-      else if (status.includes("חייל")) soldiers++;
-      else if (status.includes("עתודאי")) atuda++;
-      else if (status.includes("משוחרר")) released++;
-      else if (status.includes("שירות לאומי")) nationalService++;
-    });
-
-    // חישוב אחוז מענה
-    const filteredGraduatesCount =
-      filters.cohorts.length > 0
-        ? Object.entries(cohortCounts)
-            .filter(([cohort]) => filters.cohorts.includes(cohort))
-            .reduce((sum, [, count]) => sum + count, 0)
-        : totalGraduates;
-
-    const responseRate =
-      filteredGraduatesCount > 0
-        ? ((filteredData.length / filteredGraduatesCount) * 100).toFixed(1)
-        : "0";
-
-    // נתוני עוגה - חלוקה לפי שלב בחיים (עמודה H)
-    const getRespondentsByStatus = (statusCheck) => {
-      return filteredData
-        .filter((row) => statusCheck(getStatus(row)))
-        .map((row) => ({
-          name: getName(row),
-          cohort: getCohort(row),
-        }));
-    };
-
-    const pieData = [
-      {
-        name: 'מלש"ב',
-        value: malshab,
-        color: STATUS_COLORS['מלש"ב'],
-        respondents: getRespondentsByStatus((s) => s.includes("מלש")),
-      },
-      {
-        name: "חיילים בסדיר/קבע",
-        value: soldiers,
-        color: STATUS_COLORS["חיילים"],
-        respondents: getRespondentsByStatus((s) => s.includes("חייל")),
-      },
-      {
-        name: "עתודאים",
-        value: atuda,
-        color: STATUS_COLORS["עתודאים"],
-        respondents: getRespondentsByStatus((s) => s.includes("עתודאי")),
-      },
-      {
-        name: "משוחררים",
-        value: released,
-        color: STATUS_COLORS["משוחררים"],
-        respondents: getRespondentsByStatus((s) => s.includes("משוחרר")),
-      },
-      {
-        name: "שירות לאומי",
-        value: nationalService,
-        color: STATUS_COLORS["שירות לאומי"],
-        respondents: getRespondentsByStatus((s) => s.includes("שירות לאומי")),
-      },
-    ].filter((d) => d.value > 0);
-
-    // נתוני גרף עמודות - עונים ואחוז מענה לפי מחזור (עמודה E)
-    const filteredCohortCounts =
-      filters.cohorts.length > 0
-        ? Object.fromEntries(
-            Object.entries(cohortCounts).filter(([cohort]) =>
-              filters.cohorts.includes(cohort),
-            ),
-          )
-        : cohortCounts;
-
-    const cohortData = Object.entries(filteredCohortCounts).map(
-      ([cohort, totalValue]) => {
-        const total = totalValue;
-        const respondentsList = filteredData
-          .filter((row) => getCohort(row) === cohort)
-          .map((row) => ({ name: getName(row), cohort }));
-        const respondentsCount = respondentsList.length;
-        const percentage =
-          total > 0 ? ((respondentsCount / total) * 100).toFixed(1) : "0";
-        return {
-          name: cohort,
-          respondents: respondentsCount,
-          total,
-          percentage: parseFloat(percentage),
-          respondentsList,
-        };
-      },
-    );
-
-    return {
-      totalRespondents: filteredData.length,
-      responseRate,
-      statusCounts: { malshab, soldiers, atuda, released, nationalService },
-      pieData,
-      cohortData,
-    };
-  }, [filteredData, cohortCounts, totalGraduates, filters]);
 
   if (!hasSurveyData || stats.totalRespondents === 0) {
     return (
