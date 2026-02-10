@@ -17,9 +17,15 @@ function clamp(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 function makeGraduatePrimaryId(grad, index) {
-  return normalizeStr(
-    grad?.id ?? grad?.uid ?? grad?.email ?? grad?.full_name ?? index,
-  );
+  const id = normalizeStr(grad?.id);
+  if (id) return id;
+  const uid = normalizeStr(grad?.uid);
+  if (uid) return uid;
+  const email = normalizeStr(grad?.email);
+  if (email) return email;
+  const fullName = normalizeStr(grad?.full_name);
+  if (fullName) return fullName;
+  return normalizeStr(index);
 }
 function getCohortColor(cohort) {
   if (!cohort || cohort === "לא ידוע") return "#9ca3af";

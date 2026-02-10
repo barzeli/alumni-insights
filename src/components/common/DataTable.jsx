@@ -181,7 +181,7 @@ export default function DataTable({
 
               return (
                 <Popover key={colKey}>
-                  <PopoverTrigger>
+                  <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       className={`w-[180px] justify-between bg-white ${hasSelection ? "border-[#1e3a5f] text-[#1e3a5f]" : ""}`}
