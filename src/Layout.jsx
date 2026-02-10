@@ -85,7 +85,7 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gray-50">
+    <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col">
       <SystemStartDialog
         open={showSurveyDialog}
         onClose={() => {
@@ -242,7 +242,9 @@ export default function Layout({ children, currentPageName }) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">{children}</main>
+      <main className="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+        {children}
+      </main>
 
       {/* Footer */}
       <footer className="bg-[#1e3a5f] text-white py-4 mt-8">
