@@ -33,7 +33,7 @@ import SyncStatusIndicator from "./components/system/SyncStatusIndicator";
 import logo from "./assets/logo.jpg";
 
 const navItems = [
-  { name: "מבט כללי", page: "Overview", icon: Home },
+  { name: "מבט כללי", page: "", icon: Home },
   { name: 'מלש"בים', page: "PreArmy", icon: Users },
   { name: "חיילים בסדיר", page: "Soldiers", icon: UserCheck },
   { name: "עתודאים", page: "Atuda", icon: GraduationCap },
@@ -64,7 +64,7 @@ export default function Layout({ children, currentPageName }) {
     // Trigger re-render of data across all pages
     window.dispatchEvent(new Event("surveyDataUpdated"));
     // Navigate to Overview page
-    navigate(createPageUrl("Overview"));
+    navigate(createPageUrl(""));
   };
 
   const handleRefresh = () => {

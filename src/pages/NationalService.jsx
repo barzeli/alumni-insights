@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
-import { Heart, AlertCircle, Calendar } from "lucide-react";
+import { Heart, Calendar } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import GlobalFilters from "../components/common/GlobalFilters";
@@ -155,20 +155,6 @@ export default function NationalService() {
   }, [filteredData, hasSurveyData]);
 
   // No data state
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">שירות לאומי</h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
-
   const tableColumns = [
     { key: "full_name", label: "שם מלא" },
     { key: "cohort", label: "מחזור" },
@@ -184,165 +170,169 @@ export default function NationalService() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#1e3a5f]">שירות לאומי</h1>
-        <PageExportButton
-          pageData={{
-            תאריכי_התחלה: {
-              data: serviceData.startData,
-              columns: [
-                { key: "period", label: "תקופה" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            תאריכי_סיום: {
-              data: serviceData.endData,
-              columns: [
-                { key: "period", label: "תקופה" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            טבלה: {
-              data: serviceData.tableData,
-              columns: tableColumns,
-            },
-          }}
-          pageName="שירות_לאומי"
-        />
-      </div>
-
-      <GlobalFilters
-        surveyData={surveyData}
-        filters={filters}
-        onFilterChange={setFilters}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <StatCard
-          title="סה״כ בשירות לאומי"
-          value={serviceData.total}
-          icon={Heart}
-          color="pink"
-        />
-      </div>
-
-      {/* Charts */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Start Dates Chart */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              תאריכי התחלה לפי רבעון
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="תאריכי התחלה"
-                description="התפלגות תאריכי התחלת השירות הלאומי"
-                dataSource="עמודת 'תאריך התחלה'"
-                calculation="ספירת מספר המתחילים בכל רבעון"
-              />
-              <ChartExportButton
-                chartRef={chartRef1}
-                data={serviceData.startData}
-                filename="תאריכי_התחלה_לאומי"
-                dataColumns={[
+        {hasSurveyData && (
+          <PageExportButton
+            pageData={{
+              תאריכי_התחלה: {
+                data: serviceData.startData,
+                columns: [
                   { key: "period", label: "תקופה" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef1}>
-              {serviceData.startData.length > 0 ? (
-                <HorizontalBarChart
-                  data={serviceData.startData}
-                  dataKey="period"
-                  valueKey="count"
-                  valueLabel="מספר מתחילות"
-                  singleColor="#ec4899"
-                  height={Math.max(220, serviceData.startData.length * 40)}
-                />
-              ) : (
-                <div className="h-[220px] flex items-center justify-center text-gray-500">
-                  אין נתוני תאריכי התחלה
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* End Dates Chart */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              תאריכי סיום לפי רבעון
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="תאריכי סיום"
-                description="התפלגות תאריכי סיום השירות הלאומי"
-                dataSource="עמודת 'תאריך סיום'"
-                calculation="ספירת מספר המסיימים בכל רבעון"
-              />
-              <ChartExportButton
-                chartRef={chartRef2}
-                data={serviceData.endData}
-                filename="תאריכי_סיום_לאומי"
-                dataColumns={[
+                ],
+              },
+              תאריכי_סיום: {
+                data: serviceData.endData,
+                columns: [
                   { key: "period", label: "תקופה" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef2}>
-              {serviceData.endData.length > 0 ? (
-                <HorizontalBarChart
-                  data={serviceData.endData}
-                  dataKey="period"
-                  valueKey="count"
-                  valueLabel="מספר מסיימות"
-                  singleColor="#f472b6"
-                  height={Math.max(220, serviceData.endData.length * 40)}
-                />
-              ) : (
-                <div className="h-[220px] flex items-center justify-center text-gray-500">
-                  אין נתוני תאריכי סיום
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                ],
+              },
+              טבלה: {
+                data: serviceData.tableData,
+                columns: tableColumns,
+              },
+            }}
+            pageName="שירות_לאומי"
+          />
+        )}
       </div>
 
-      {/* Table */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">
-            רשימת המשרתות בשירות לאומי
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            <ViewContactsButton
-              data={serviceData.tableData}
-              filterLabel="שירות לאומי"
-            />
-            <TableExportButton
-              data={serviceData.tableData}
-              columns={tableColumns}
-              filename="שירות_לאומי"
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <GlobalFilters
+            surveyData={surveyData}
+            filters={filters}
+            onFilterChange={setFilters}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <StatCard
+              title="סה״כ בשירות לאומי"
+              value={serviceData.total}
+              icon={Heart}
+              color="pink"
             />
           </div>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            data={serviceData.tableData}
-            columns={tableColumns}
-            pageSize={15}
-          />
-        </CardContent>
-      </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  תאריכי התחלה לפי רבעון
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="תאריכי התחלה"
+                    description="התפלגות תאריכי התחלת השירות הלאומי"
+                    dataSource="עמודת 'תאריך התחלה'"
+                    calculation="ספירת מספר המתחילים בכל רבעון"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef1}
+                    data={serviceData.startData}
+                    filename="תאריכי_התחלה_לאומי"
+                    dataColumns={[
+                      { key: "period", label: "תקופה" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef1}>
+                  {serviceData.startData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={serviceData.startData}
+                      dataKey="period"
+                      valueKey="count"
+                      valueLabel="מספר מתחילות"
+                      singleColor="#ec4899"
+                      height={Math.max(220, serviceData.startData.length * 40)}
+                    />
+                  ) : (
+                    <div className="h-[220px] flex items-center justify-center text-gray-500">
+                      אין נתוני תאריכי התחלה
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  תאריכי סיום לפי רבעון
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="תאריכי סיום"
+                    description="התפלגות תאריכי סיום השירות הלאומי"
+                    dataSource="עמודת 'תאריך סיום'"
+                    calculation="ספירת מספר המסיימים בכל רבעון"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef2}
+                    data={serviceData.endData}
+                    filename="תאריכי_סיום_לאומי"
+                    dataColumns={[
+                      { key: "period", label: "תקופה" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef2}>
+                  {serviceData.endData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={serviceData.endData}
+                      dataKey="period"
+                      valueKey="count"
+                      valueLabel="מספר מסיימות"
+                      singleColor="#f472b6"
+                      height={Math.max(220, serviceData.endData.length * 40)}
+                    />
+                  ) : (
+                    <div className="h-[220px] flex items-center justify-center text-gray-500">
+                      אין נתוני תאריכי סיום
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                רשימת המשרתות בשירות לאומי
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <ViewContactsButton
+                  data={serviceData.tableData}
+                  filterLabel="שירות לאומי"
+                />
+                <TableExportButton
+                  data={serviceData.tableData}
+                  columns={tableColumns}
+                  filename="שירות_לאומי"
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={serviceData.tableData}
+                columns={tableColumns}
+                pageSize={15}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

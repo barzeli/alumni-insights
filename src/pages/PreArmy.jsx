@@ -1,16 +1,13 @@
 import { useMemo, useRef, useState } from "react";
 import GlobalFilters from "../components/common/GlobalFilters";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils/createPageUrl";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
-import { Button } from "../components/ui/button";
-import { Users, Upload, AlertCircle, Calendar, Target } from "lucide-react";
+import { Users, Calendar, Target } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
@@ -177,245 +174,225 @@ export default function PreArmy() {
     };
   }, [filteredSurveyData, hasSurveyData]);
 
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">מלש"בים</h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-        <Link to="/">
-          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
-            <Upload className="w-4 h-4" />
-            העלאת קובץ סקר
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
-  const tableColumns = [
-    { key: "full_name", label: "שם מלא" },
-    { key: "cohort", label: "מחזור" },
-    { key: "enlistment_date", label: "תאריך גיוס" },
-    { key: "destination", label: "יעד גיוס" },
-    { key: "destination_detail", label: "פירוט יעד" },
-  ];
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#1e3a5f]">מלש"בים</h1>
-        <PageExportButton
-          pageData={{
-            תאריכי_גיוס: {
-              data: malshabData.monthData,
-              columns: [
-                { key: "month", label: "חודש" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            יעד_גיוס: {
-              data: malshabData.destinationData,
-              columns: [
-                { key: "destination", label: "יעד" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            לפי_מחזור: {
-              data: malshabData.cohortData,
-              columns: [
-                { key: "cohort", label: "מחזור" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            טבלה: { data: malshabData.tableData, columns: tableColumns },
-          }}
-          pageName="מלשבים"
-        />
-      </div>
-
-      <GlobalFilters
-        surveyData={surveyData}
-        filters={filters}
-        onFilterChange={setFilters}
-      />
-
-      {/* ריבוע מידע - סהכ מלשבים */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard
-          title="סהכ מלשבים"
-          value={malshabData.total}
-          icon={Users}
-          color="orange"
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* גרף עמודות - תאריכי גיוס לפי חודשים (עמודה I) */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              תאריכי גיוס לפי חודשים
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="תאריכי גיוס לפי חודשים"
-                description="חלוקת תאריכי הגיוס לפי חודשים וספירת כמה מתגייסים באותו החודש"
-                dataSource="עמודה I - מתי התאריך גיוס"
-                calculation="ספירת מלש״בים לכל חודש"
-              />
-              <ChartExportButton
-                chartRef={chartRef1}
-                data={malshabData.monthData}
-                filename="תאריכי_גיוס_מלשבים"
-                dataColumns={[
+        {hasSurveyData && (
+          <PageExportButton
+            pageData={{
+              תאריכי_גיוס: {
+                data: malshabData.monthData,
+                columns: [
                   { key: "month", label: "חודש" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef1}>
-              {malshabData.monthData.length > 0 ? (
-                <HorizontalBarChart
-                  data={malshabData.monthData}
-                  dataKey="month"
-                  valueLabel="מספר מלש״בים"
-                  singleColor="#f59e0b"
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתוני תאריכי גיוס
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* גרף עמודות - יעד גיוס (עמודה J) */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
-              <Target className="w-5 h-5" />
-              יעד גיוס
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="יעד גיוס"
-                description="חלוקה לפי יעד הגיוס של כל המלשבים (בחירה מרובה)"
-                dataSource="עמודה J - לאן הגיוס העתידי?"
-                calculation="ספירת מלש״בים לכל יעד"
-              />
-              <ChartExportButton
-                chartRef={chartRef2}
-                data={malshabData.destinationData}
-                filename="יעד_גיוס_מלשבים"
-                dataColumns={[
+                ],
+              },
+              יעד_גיוס: {
+                data: malshabData.destinationData,
+                columns: [
                   { key: "destination", label: "יעד" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef2}>
-              {malshabData.destinationData.length > 0 ? (
-                <HorizontalBarChart
-                  data={malshabData.destinationData}
-                  dataKey="destination"
-                  valueLabel="מספר"
-                  singleColor="#0891b2"
-                  height={Math.max(
-                    200,
-                    malshabData.destinationData.length * 35,
-                  )}
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתוני יעד גיוס
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* גרף עמודות - מלשבים לפי מחזור (עמודות E + H) */}
-        <Card className="md:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              מלש"בים לפי מחזור
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="מלש״בים לפי מחזור"
-                description="מספר המלש״בים מכל מחזור"
-                dataSource="עמודה E - מחזור + עמודה H - מצב מול צה״ל = מלש״ב"
-                calculation="ספירת מלש״בים מכל מחזור"
-              />
-              <ChartExportButton
-                chartRef={chartRef3}
-                data={malshabData.cohortData}
-                filename="מלשבים_לפי_מחזור"
-                dataColumns={[
+                ],
+              },
+              לפי_מחזור: {
+                data: malshabData.cohortData,
+                columns: [
                   { key: "cohort", label: "מחזור" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef3}>
-              {malshabData.cohortData.length > 0 ? (
-                <HorizontalBarChart
-                  data={malshabData.cohortData}
-                  dataKey="cohort"
-                  valueLabel="מספר מלש״בים"
-                  useCohortColors
-                  height={250}
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתונים
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                ],
+              },
+              טבלה: { data: malshabData.tableData, columns: tableColumns },
+            }}
+            pageName="מלשבים"
+          />
+        )}
       </div>
 
-      {/* טבלה - רשימת מלשבים (עמודות B, E, I, J) */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">
-            רשימת מלש"בים
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            <ViewContactsButton
-              data={malshabData.tableData}
-              filterLabel="מלש״בים"
-            />
-            <TableExportButton
-              data={malshabData.tableData}
-              columns={tableColumns}
-              filename="רשימת_מלשבים"
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <GlobalFilters
+            surveyData={surveyData}
+            filters={filters}
+            onFilterChange={setFilters}
+          />
+
+          {/* ריבוע מידע - סהכ מלשבים */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatCard
+              title="סהכ מלשבים"
+              value={malshabData.total}
+              icon={Users}
+              color="orange"
             />
           </div>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            data={malshabData.tableData}
-            columns={tableColumns}
-            pageSize={15}
-            filterableColumns={["cohort", "destination"]}
-          />
-        </CardContent>
-      </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* גרף עמודות - תאריכי גיוס לפי חודשים (עמודה I) */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  תאריכי גיוס לפי חודשים
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="תאריכי גיוס לפי חודשים"
+                    description="חלוקת תאריכי הגיוס לפי חודשים וספירת כמה מתגייסים באותו החודש"
+                    dataSource="עמודה I - מתי התאריך גיוס"
+                    calculation="ספירת מלש״בים לכל חודש"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef1}
+                    data={malshabData.monthData}
+                    filename="תאריכי_גיוס_מלשבים"
+                    dataColumns={[
+                      { key: "month", label: "חודש" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef1}>
+                  {malshabData.monthData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={malshabData.monthData}
+                      dataKey="month"
+                      valueLabel="מספר מלש״בים"
+                      singleColor="#f59e0b"
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתוני תאריכי גיוס
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* גרף עמודות - יעד גיוס (עמודה J) */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f] flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  יעד גיוס
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="יעד גיוס"
+                    description="חלוקה לפי יעד הגיוס של כל המלשבים (בחירה מרובה)"
+                    dataSource="עמודה J - לאן הגיוס העתידי?"
+                    calculation="ספירת מלש״בים לכל יעד"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef2}
+                    data={malshabData.destinationData}
+                    filename="יעד_גיוס_מלשבים"
+                    dataColumns={[
+                      { key: "destination", label: "יעד" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef2}>
+                  {malshabData.destinationData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={malshabData.destinationData}
+                      dataKey="destination"
+                      valueLabel="מספר"
+                      singleColor="#0891b2"
+                      height={Math.max(
+                        200,
+                        malshabData.destinationData.length * 35,
+                      )}
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתוני יעד גיוס
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* גרף עמודות - מלשבים לפי מחזור (עמודות E + H) */}
+            <Card className="md:col-span-2">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  מלש"בים לפי מחזור
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="מלש״בים לפי מחזור"
+                    description="מספר המלש״בים מכל מחזור"
+                    dataSource="עמודה E - מחזור + עמודה H - מצב מול צה״ל = מלש״ב"
+                    calculation="ספירת מלש״בים מכל מחזור"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef3}
+                    data={malshabData.cohortData}
+                    filename="מלשבים_לפי_מחזור"
+                    dataColumns={[
+                      { key: "cohort", label: "מחזור" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef3}>
+                  {malshabData.cohortData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={malshabData.cohortData}
+                      dataKey="cohort"
+                      valueLabel="מספר מלש״בים"
+                      useCohortColors
+                      height={250}
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* טבלה - רשימת מלשבים (עמודות B, E, I, J) */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                רשימת מלש"בים
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <ViewContactsButton
+                  data={malshabData.tableData}
+                  filterLabel="מלש״בים"
+                />
+                <TableExportButton
+                  data={malshabData.tableData}
+                  columns={tableColumns}
+                  filename="רשימת_מלשבים"
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={malshabData.tableData}
+                columns={tableColumns}
+                pageSize={15}
+                filterableColumns={["cohort", "destination"]}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

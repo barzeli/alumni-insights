@@ -5,8 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
-import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Checkbox } from "../components/ui/checkbox";
 import {
@@ -15,19 +13,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import {
-  Network,
-  Table as TableIcon,
-  Flame,
-  AlertCircle,
-  Upload,
-} from "lucide-react";
+import { Network, Table as TableIcon, Flame } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import { useSurveyData } from "../hooks/useSurveyData";
 
 import { getValue, getName } from "../utils/surveyDataHelpers";
 import { getCohortBarColors } from "../utils/colors";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils/createPageUrl";
 import {
   BarChart,
   Bar,
@@ -192,162 +183,154 @@ export default function SocialNetwork() {
     });
   };
 
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">רשת קשרים חברתיים</h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-        <Link to="/">
-          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
-            <Upload className="w-4 h-4" />
-            העלאת קובץ סקר
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-[#1e3a5f]">רשת קשרים חברתיים</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              סה"כ בוגרים
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-[#1e3a5f]">
-              {filteredData?.nodes.length || 0}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              סה"כ קשרים
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-cyan-600">
-              {filteredData?.edges.length || 0}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              שמות לא מזוהים
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-orange-600">
-              {networkData?.unmatchedNames.length || 0}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <FamilyStatusByCohort data={filteredData?.nodes || []} />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">סינון לפי מחזור</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-4">
-            {networkData?.cohorts.map((cohort) => (
-              <div key={cohort} className="flex items-center gap-2">
-                <Checkbox
-                  checked={selectedCohorts.has(cohort)}
-                  onCheckedChange={() => toggleCohort(cohort)}
-                />
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: getCohortBarColors(cohort).main }}
-                />
-                <span>{cohort}</span>
-              </div>
-            ))}
-            <div className="flex items-center gap-2">
-              <Checkbox
-                checked={showUnknown}
-                onCheckedChange={setShowUnknown}
-              />
-              <div className="w-4 h-4 rounded-full bg-gray-400" />
-              <span>לא ידוע</span>
-            </div>
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-gray-600">
+                  סה"כ בוגרים
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-[#1e3a5f]">
+                  {filteredData?.nodes.length || 0}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-gray-600">
+                  סה"כ קשרים
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-cyan-600">
+                  {filteredData?.edges.length || 0}
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-gray-600">
+                  שמות לא מזוהים בסקר
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-3xl font-bold text-orange-600">
+                  {networkData?.unmatchedNames.length || 0}
+                </p>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
 
-      <Tabs defaultValue="graph" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 h-auto gap-4 bg-transparent p-0">
-          <TabsTrigger
-            value="graph"
-            className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
-          >
-            <Network className="w-8 h-8" />
-            <span className="font-bold text-base">גרף רשת</span>
-          </TabsTrigger>
+          <FamilyStatusByCohort data={filteredData?.nodes || []} />
 
-          <TabsTrigger
-            value="matrix"
-            className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
-          >
-            <TableIcon className="w-8 h-8" />
-            <span className="font-bold text-base">מטריצת קשרים</span>
-          </TabsTrigger>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">סינון לפי מחזור</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4">
+                {networkData?.cohorts.map((cohort) => (
+                  <div key={cohort} className="flex items-center gap-2">
+                    <Checkbox
+                      checked={selectedCohorts.has(cohort)}
+                      onCheckedChange={() => toggleCohort(cohort)}
+                    />
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{
+                        backgroundColor: getCohortBarColors(cohort).main,
+                      }}
+                    />
+                    <span>{cohort}</span>
+                  </div>
+                ))}
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    checked={showUnknown}
+                    onCheckedChange={setShowUnknown}
+                  />
+                  <div className="w-4 h-4 rounded-full bg-gray-400" />
+                  <span>לא ידוע</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsTrigger
-            value="heatmap"
-            className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
-          >
-            <Flame className="w-8 h-8" />
-            <span className="font-bold text-base">מפת חום</span>
-          </TabsTrigger>
-        </TabsList>
+          <Tabs defaultValue="graph" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 h-auto gap-4 bg-transparent p-0">
+              <TabsTrigger
+                value="graph"
+                className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
+              >
+                <Network className="w-8 h-8" />
+                <span className="font-bold text-base">גרף רשת</span>
+              </TabsTrigger>
 
-        <div className="mt-6">
-          <TabsContent value="graph">
-            <NetworkGraph data={filteredData} />
-          </TabsContent>
-          <TabsContent value="matrix">
-            <ConnectionMatrix data={filteredData} />
-          </TabsContent>
-          <TabsContent value="heatmap">
-            <Heatmap data={filteredData} />
-          </TabsContent>
-        </div>
-      </Tabs>
+              <TabsTrigger
+                value="matrix"
+                className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
+              >
+                <TableIcon className="w-8 h-8" />
+                <span className="font-bold text-base">מטריצת קשרים</span>
+              </TabsTrigger>
 
-      {networkData?.unmatchedNames.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-orange-600">
-              שמות לא מזוהים בסקר
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600 mb-3">
-              השמות הבאים הופיעו בשדות הקשרים אך אינם קיימים כמשיבים בסקר:
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {networkData.unmatchedNames.map((name) => (
-                <Badge key={name} variant="outline" className="text-orange-600">
-                  {name}
-                </Badge>
-              ))}
+              <TabsTrigger
+                value="heatmap"
+                className="flex flex-col items-center justify-center gap-3 aspect-square border-2 border-gray-200 rounded-xl data-[state=active]:border-[#0891b2] data-[state=active]:bg-white data-[state=active]:shadow-md transition-all"
+              >
+                <Flame className="w-8 h-8" />
+                <span className="font-bold text-base">מפת חום</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <div className="mt-6">
+              <TabsContent value="graph">
+                <NetworkGraph data={filteredData} />
+              </TabsContent>
+              <TabsContent value="matrix">
+                <ConnectionMatrix data={filteredData} />
+              </TabsContent>
+              <TabsContent value="heatmap">
+                <Heatmap data={filteredData} />
+              </TabsContent>
             </div>
-          </CardContent>
-        </Card>
+          </Tabs>
+
+          {networkData?.unmatchedNames.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg text-orange-600">
+                  שמות לא מזוהים בסקר
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600 mb-3">
+                  השמות הבאים הופיעו בשדות הקשרים אך אינם קיימים כמשיבים בסקר:
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {networkData.unmatchedNames.map((name) => (
+                    <Badge
+                      key={name}
+                      variant="outline"
+                      className="text-orange-600"
+                    >
+                      {name}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </>
       )}
     </div>
   );

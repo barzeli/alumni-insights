@@ -1,15 +1,12 @@
 import { useMemo, useRef } from "react";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils/createPageUrl";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
-import { Button } from "../components/ui/button";
-import { FileText, Upload, AlertCircle, Brain } from "lucide-react";
+import { FileText, Brain } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
@@ -108,28 +105,6 @@ export default function BagrutServiceStudents() {
     };
   }, [surveyData, hasSurveyData]);
 
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">
-          חיילים משפרי בגרויות ופסיכומטרי
-        </h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-        <Link to="/">
-          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
-            <Upload className="w-4 h-4" />
-            העלאת קובץ סקר
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   const tableColumns = [
     { key: "full_name", label: "שם מלא" },
     { key: "cohort", label: "מחזור" },
@@ -146,125 +121,133 @@ export default function BagrutServiceStudents() {
         <h1 className="text-2xl font-bold text-[#1e3a5f]">
           חיילים משפרי בגרויות ופסיכומטרי
         </h1>
-        <PageExportButton
-          pageData={{
-            סטטוס_פסיכומטרי: {
-              data: bagrutData.psychometricStatusData,
-              columns: [
-                { key: "status", label: "סטטוס" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            טבלה: { data: bagrutData.tableData, columns: tableColumns },
-          }}
-          pageName="חיילים_משפרי_בגרויות"
-        />
+        {hasSurveyData && (
+          <PageExportButton
+            pageData={{
+              סטטוס_פסיכומטרי: {
+                data: bagrutData.psychometricStatusData,
+                columns: [
+                  { key: "status", label: "סטטוס" },
+                  { key: "count", label: "מספר" },
+                ],
+              },
+              טבלה: { data: bagrutData.tableData, columns: tableColumns },
+            }}
+            pageName="חיילים_משפרי_בגרויות"
+          />
+        )}
       </div>
 
       <StudyingSubNav currentPage="BagrutServiceStudents" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <StatCard
-          title="משפרי בגרויות"
-          value={bagrutData.bagrutCount}
-          icon={FileText}
-          color="orange"
-        />
-        <StatCard
-          title="לומדים לפסיכומטרי"
-          value={bagrutData.psychometricCount}
-          icon={Brain}
-          color="purple"
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              משפרי בגרויות
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-center h-[200px]">
-              <div className="text-center">
-                <p className="text-5xl font-bold text-orange-500">
-                  {bagrutData.bagrutCount}
-                </p>
-                <p className="text-gray-600 mt-2">חיילים משפרים בגרויות</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              סטטוס פסיכומטרי
-            </CardTitle>
-            <ChartExportButton
-              chartRef={chartRef1}
-              data={bagrutData.psychometricStatusData}
-              filename="סטטוס_פסיכומטרי"
-              dataColumns={[
-                { key: "status", label: "סטטוס" },
-                { key: "count", label: "מספר" },
-              ]}
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <StatCard
+              title="משפרי בגרויות"
+              value={bagrutData.bagrutCount}
+              icon={FileText}
+              color="orange"
             />
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef1}>
-              {bagrutData.psychometricStatusData.length > 0 ? (
-                <HorizontalBarChart
-                  data={bagrutData.psychometricStatusData}
-                  dataKey="status"
-                  valueLabel="מספר"
-                  singleColor="#8b5cf6"
-                  height={200}
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center">
-                  <div className="text-center text-gray-500">
-                    <Brain className="w-12 h-12 mx-auto mb-2 opacity-20" />
-                    <p>אין נתוני סטטוס פסיכומטרי</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">
-            רשימת משפרים (בגרויות ופסיכומטרי)
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            <ViewContactsButton
-              data={bagrutData.tableData}
-              filterLabel="חיילים משפרי בגרויות ופסיכומטרי"
-            />
-            <TableExportButton
-              data={bagrutData.tableData}
-              columns={tableColumns}
-              filename="חיילים_משפרים"
+            <StatCard
+              title="לומדים לפסיכומטרי"
+              value={bagrutData.psychometricCount}
+              icon={Brain}
+              color="purple"
             />
           </div>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            data={bagrutData.tableData}
-            columns={tableColumns}
-            pageSize={15}
-            filterableColumns={[
-              "cohort",
-              "improving_bagrut",
-              "studying_psychometric",
-            ]}
-          />
-        </CardContent>
-      </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  משפרי בגרויות
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-center h-[200px]">
+                  <div className="text-center">
+                    <p className="text-5xl font-bold text-orange-500">
+                      {bagrutData.bagrutCount}
+                    </p>
+                    <p className="text-gray-600 mt-2">חיילים משפרים בגרויות</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  סטטוס פסיכומטרי
+                </CardTitle>
+                <ChartExportButton
+                  chartRef={chartRef1}
+                  data={bagrutData.psychometricStatusData}
+                  filename="סטטוס_פסיכומטרי"
+                  dataColumns={[
+                    { key: "status", label: "סטטוס" },
+                    { key: "count", label: "מספר" },
+                  ]}
+                />
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef1}>
+                  {bagrutData.psychometricStatusData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={bagrutData.psychometricStatusData}
+                      dataKey="status"
+                      valueLabel="מספר"
+                      singleColor="#8b5cf6"
+                      height={200}
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center">
+                      <div className="text-center text-gray-500">
+                        <Brain className="w-12 h-12 mx-auto mb-2 opacity-20" />
+                        <p>אין נתוני סטטוס פסיכומטרי</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                רשימת משפרים (בגרויות ופסיכומטרי)
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <ViewContactsButton
+                  data={bagrutData.tableData}
+                  filterLabel="חיילים משפרי בגרויות ופסיכומטרי"
+                />
+                <TableExportButton
+                  data={bagrutData.tableData}
+                  columns={tableColumns}
+                  filename="חיילים_משפרים"
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={bagrutData.tableData}
+                columns={tableColumns}
+                pageSize={15}
+                filterableColumns={[
+                  "cohort",
+                  "improving_bagrut",
+                  "studying_psychometric",
+                ]}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

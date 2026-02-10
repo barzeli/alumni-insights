@@ -1,15 +1,12 @@
 import { useMemo, useRef } from "react";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils/createPageUrl";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
-import { Button } from "../components/ui/button";
-import { GraduationCap, Upload, AlertCircle } from "lucide-react";
+import { GraduationCap } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
@@ -143,28 +140,6 @@ export default function DegreeServiceStudents() {
     };
   }, [surveyData, hasSurveyData]);
 
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">
-          חיילים לומדים לתואר ראשון
-        </h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-        <Link to="/">
-          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
-            <Upload className="w-4 h-4" />
-            העלאת קובץ סקר
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   const tableColumns = [
     { key: "full_name", label: "שם מלא" },
     { key: "cohort", label: "מחזור" },
@@ -181,182 +156,195 @@ export default function DegreeServiceStudents() {
         <h1 className="text-2xl font-bold text-[#1e3a5f]">
           חיילים לומדים לתואר ראשון
         </h1>
-        <PageExportButton
-          pageData={{
-            מוסדות: {
-              data: studentsData.institutionData,
-              columns: [
-                { key: "institution", label: "מוסד" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            פקולטות: {
-              data: studentsData.facultyData,
-              columns: [
-                { key: "faculty", label: "פקולטה" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            סוג_מסלול: {
-              data: studentsData.trackTypeData,
-              columns: [
-                { key: "trackType", label: "סוג" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            טבלה: { data: studentsData.tableData, columns: tableColumns },
-          }}
-          pageName="חיילים_לומדים_לתואר"
-        />
+        {hasSurveyData && (
+          <PageExportButton
+            pageData={{
+              מוסדות: {
+                data: studentsData.institutionData,
+                columns: [
+                  { key: "institution", label: "מוסד" },
+                  { key: "count", label: "מספר" },
+                ],
+              },
+              פקולטות: {
+                data: studentsData.facultyData,
+                columns: [
+                  { key: "faculty", label: "פקולטה" },
+                  { key: "count", label: "מספר" },
+                ],
+              },
+              סוג_מסלול: {
+                data: studentsData.trackTypeData,
+                columns: [
+                  { key: "trackType", label: "סוג" },
+                  { key: "count", label: "מספר" },
+                ],
+              },
+              טבלה: { data: studentsData.tableData, columns: tableColumns },
+            }}
+            pageName="חיילים_לומדים_לתואר"
+          />
+        )}
       </div>
 
       <StudyingSubNav currentPage="DegreeServiceStudents" />
 
-      <div className="grid grid-cols-1 gap-4">
-        <StatCard
-          title="סה״כ חיילים לומדים לתואר"
-          value={studentsData.total}
-          icon={GraduationCap}
-          color="blue"
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              מוסדות אקדמיים
-            </CardTitle>
-            <ChartExportButton
-              chartRef={chartRef1}
-              data={studentsData.institutionData}
-              filename="מוסדות_אקדמיים"
-              dataColumns={[
-                { key: "institution", label: "מוסד" },
-                { key: "count", label: "מספר" },
-              ]}
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-4">
+            <StatCard
+              title="סה״כ חיילים לומדים לתואר"
+              value={studentsData.total}
+              icon={GraduationCap}
+              color="blue"
             />
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef1}>
-              {studentsData.institutionData.length > 0 ? (
-                <HorizontalBarChart
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  מוסדות אקדמיים
+                </CardTitle>
+                <ChartExportButton
+                  chartRef={chartRef1}
                   data={studentsData.institutionData}
-                  dataKey="institution"
-                  valueLabel="מספר"
-                  singleColor="#1e3a5f"
-                  height={Math.max(
-                    250,
-                    studentsData.institutionData.length * 45,
+                  filename="מוסדות_אקדמיים"
+                  dataColumns={[
+                    { key: "institution", label: "מוסד" },
+                    { key: "count", label: "מספר" },
+                  ]}
+                />
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef1}>
+                  {studentsData.institutionData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={studentsData.institutionData}
+                      dataKey="institution"
+                      valueLabel="מספר"
+                      singleColor="#1e3a5f"
+                      height={Math.max(
+                        250,
+                        studentsData.institutionData.length * 45,
+                      )}
+                    />
+                  ) : (
+                    <div className="h-[250px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
                   )}
-                />
-              ) : (
-                <div className="h-[250px] flex items-center justify-center text-gray-500">
-                  אין נתונים
                 </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">פקולטות</CardTitle>
-            <ChartExportButton
-              chartRef={chartRef2}
-              data={studentsData.facultyData}
-              filename="פקולטות"
-              dataColumns={[
-                { key: "faculty", label: "פקולטה" },
-                { key: "count", label: "מספר" },
-              ]}
-            />
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef2}>
-              {studentsData.facultyData.length > 0 ? (
-                <HorizontalBarChart
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  פקולטות
+                </CardTitle>
+                <ChartExportButton
+                  chartRef={chartRef2}
                   data={studentsData.facultyData}
-                  dataKey="faculty"
-                  valueLabel="מספר"
-                  singleColor="#0891b2"
-                  height={Math.max(250, studentsData.facultyData.length * 45)}
+                  filename="פקולטות"
+                  dataColumns={[
+                    { key: "faculty", label: "פקולטה" },
+                    { key: "count", label: "מספר" },
+                  ]}
                 />
-              ) : (
-                <div className="h-[250px] flex items-center justify-center text-gray-500">
-                  אין נתונים
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef2}>
+                  {studentsData.facultyData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={studentsData.facultyData}
+                      dataKey="faculty"
+                      valueLabel="מספר"
+                      singleColor="#0891b2"
+                      height={Math.max(
+                        250,
+                        studentsData.facultyData.length * 45,
+                      )}
+                    />
+                  ) : (
+                    <div className="h-[250px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              </CardContent>
+            </Card>
+          </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">
-            סוג מסלול (תואר / צבירה)
-          </CardTitle>
-          <ChartExportButton
-            chartRef={chartRef3}
-            data={studentsData.trackTypeData}
-            filename="סוג_מסלול"
-            dataColumns={[
-              { key: "trackType", label: "סוג" },
-              { key: "count", label: "מספר" },
-            ]}
-          />
-        </CardHeader>
-        <CardContent>
-          <div ref={chartRef3}>
-            {studentsData.trackTypeData.length > 0 ? (
-              <HorizontalBarChart
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                סוג מסלול (תואר / צבירה)
+              </CardTitle>
+              <ChartExportButton
+                chartRef={chartRef3}
                 data={studentsData.trackTypeData}
-                dataKey="trackType"
-                valueLabel="מספר"
-                singleColor="#8b5cf6"
-                height={200}
+                filename="סוג_מסלול"
+                dataColumns={[
+                  { key: "trackType", label: "סוג" },
+                  { key: "count", label: "מספר" },
+                ]}
               />
-            ) : (
-              <div className="h-[200px] flex items-center justify-center text-gray-500">
-                אין נתונים
+            </CardHeader>
+            <CardContent>
+              <div ref={chartRef3}>
+                {studentsData.trackTypeData.length > 0 ? (
+                  <HorizontalBarChart
+                    data={studentsData.trackTypeData}
+                    dataKey="trackType"
+                    valueLabel="מספר"
+                    singleColor="#8b5cf6"
+                    height={200}
+                  />
+                ) : (
+                  <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    אין נתונים
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">
-            רשימת חיילים לומדים
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            <ViewContactsButton
-              data={studentsData.tableData}
-              filterLabel="חיילים לומדים לתואר"
-            />
-            <TableExportButton
-              data={studentsData.tableData}
-              columns={tableColumns}
-              filename="חיילים_לומדים"
-            />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            data={studentsData.tableData}
-            columns={tableColumns}
-            pageSize={15}
-            filterableColumns={[
-              "cohort",
-              "student_institution",
-              "student_faculty",
-              "academic_track_type",
-            ]}
-          />
-        </CardContent>
-      </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                רשימת חיילים לומדים
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <ViewContactsButton
+                  data={studentsData.tableData}
+                  filterLabel="חיילים לומדים לתואר"
+                />
+                <TableExportButton
+                  data={studentsData.tableData}
+                  columns={tableColumns}
+                  filename="חיילים_לומדים"
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={studentsData.tableData}
+                columns={tableColumns}
+                pageSize={15}
+                filterableColumns={[
+                  "cohort",
+                  "student_institution",
+                  "student_faculty",
+                  "academic_track_type",
+                ]}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }

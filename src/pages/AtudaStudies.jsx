@@ -7,15 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
-import {
-  School,
-  Upload,
-  AlertCircle,
-  Calendar,
-  ArrowRight,
-} from "lucide-react";
+import { School, Calendar, ArrowRight } from "lucide-react";
+import NoDataView from "../components/common/NoDataView";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
@@ -173,28 +167,6 @@ export default function AtudaStudies() {
     };
   }, [surveyData, hasSurveyData]);
 
-  if (!hasSurveyData) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-[#1e3a5f]">
-          עתודאים - שלב הלימודים
-        </h1>
-        <Alert className="bg-amber-50 border-amber-200">
-          <AlertCircle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
-          </AlertDescription>
-        </Alert>
-        <Link to="/">
-          <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
-            <Upload className="w-4 h-4" />
-            העלאת קובץ סקר
-          </Button>
-        </Link>
-      </div>
-    );
-  }
-
   const tableColumns = [
     { key: "full_name", label: "שם מלא" },
     { key: "cohort", label: "מחזור" },
@@ -221,243 +193,253 @@ export default function AtudaStudies() {
             עתודאים - שלב הלימודים
           </h1>
         </div>
-        <PageExportButton
-          pageData={{
-            מוסדות: {
-              data: studiesData.institutionData,
-              columns: [
-                { key: "institution", label: "מוסד" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            פקולטות: {
-              data: studiesData.facultyData,
-              columns: [
-                { key: "faculty", label: "פקולטה" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            שנים: {
-              data: studiesData.yearData,
-              columns: [
-                { key: "year", label: "שנה" },
-                { key: "count", label: "מספר" },
-              ],
-            },
-            טבלה: { data: studiesData.tableData, columns: tableColumns },
-          }}
-          pageName="עתודאים_לימודים"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <StatCard
-          title="סטודנטים פעילים"
-          value={studiesData.total}
-          icon={School}
-          color="blue"
-        />
-        <StatCard
-          title="מסיימי שנה ד׳"
-          value={studiesData.fourthYear}
-          icon={Calendar}
-          color="cyan"
-        />
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              מוסדות לימוד מובילים
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="מוסדות לימוד"
-                description="התפלגות עתודאים לפי מוסד אקדמי"
-                dataSource="אינדקס 26 - מוסד אקדמי"
-                calculation="ספירת עתודאים בכל מוסד"
-              />
-              <ChartExportButton
-                chartRef={chartRef1}
-                data={studiesData.institutionData}
-                filename="מוסדות_לימוד"
-                dataColumns={[
+        {hasSurveyData && (
+          <PageExportButton
+            pageData={{
+              מוסדות: {
+                data: studiesData.institutionData,
+                columns: [
                   { key: "institution", label: "מוסד" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef1}>
-              {studiesData.institutionData.length > 0 ? (
-                <HorizontalBarChart
-                  data={studiesData.institutionData}
-                  dataKey="institution"
-                  valueLabel="מספר עתודאים"
-                  singleColor="#3b82f6"
-                  height={Math.max(
-                    200,
-                    studiesData.institutionData.length * 35,
-                  )}
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתונים
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              חתך פקולטות
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="פקולטות"
-                description="התפלגות עתודאים לפי תחום לימוד"
-                dataSource="אינדקס 27 - פקולטה"
-                calculation="ספירת עתודאים בכל פקולטה"
-              />
-              <ChartExportButton
-                chartRef={chartRef2}
-                data={studiesData.facultyData}
-                filename="פקולטות"
-                dataColumns={[
+                ],
+              },
+              פקולטות: {
+                data: studiesData.facultyData,
+                columns: [
                   { key: "faculty", label: "פקולטה" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef2}>
-              {studiesData.facultyData.length > 0 ? (
-                <ReusablePieChart
-                  data={studiesData.facultyData}
-                  dataKey="faculty"
-                  title=""
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתונים
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              שנת לימודים
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="שנת לימודים"
-                description="התפלגות עתודאים לפי שנה בתואר"
-                dataSource="אינדקס 29 - שנה בתואר"
-                calculation="ספירת עתודאים בכל שנה"
-              />
-              <ChartExportButton
-                chartRef={chartRef3}
-                data={studiesData.yearData}
-                filename="שנות_לימוד"
-                dataColumns={[
+                ],
+              },
+              שנים: {
+                data: studiesData.yearData,
+                columns: [
                   { key: "year", label: "שנה" },
                   { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef3}>
-              {studiesData.yearData.length > 0 ? (
-                <HorizontalBarChart
-                  data={studiesData.yearData}
-                  dataKey="year"
-                  valueLabel="מספר עתודאים"
-                  singleColor="#06b6d4"
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתונים
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg text-[#1e3a5f]">
-              עתודאים לפי מחזור
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <ChartInfoButton
-                title="עתודאים לפי מחזור"
-                description="התפלגות עתודאים בלימודים לפי מחזור"
-                dataSource="אינדקס 4 - מחזור"
-                calculation="ספירת עתודאים לפי מחזור"
-              />
-              <ChartExportButton
-                chartRef={chartRef4}
-                data={studiesData.cohortData}
-                filename="עתודאים_לפי_מחזור"
-                dataColumns={[
-                  { key: "cohort", label: "מחזור" },
-                  { key: "count", label: "מספר" },
-                ]}
-              />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div ref={chartRef4}>
-              {studiesData.cohortData.length > 0 ? (
-                <HorizontalBarChart
-                  data={studiesData.cohortData}
-                  dataKey="cohort"
-                  valueLabel="מספר עתודאים"
-                  useCohortColors
-                />
-              ) : (
-                <div className="h-[200px] flex items-center justify-center text-gray-500">
-                  אין נתונים
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                ],
+              },
+              טבלה: { data: studiesData.tableData, columns: tableColumns },
+            }}
+            pageName="עתודאים_לימודים"
+          />
+        )}
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg text-[#1e3a5f]">טבלה אקדמית</CardTitle>
-          <div className="flex items-center gap-2">
-            <ViewContactsButton
-              data={studiesData.tableData}
-              filterLabel="עתודאים בלימודים"
+      {!hasSurveyData ? (
+        <NoDataView />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <StatCard
+              title="סטודנטים פעילים"
+              value={studiesData.total}
+              icon={School}
+              color="blue"
             />
-            <TableExportButton
-              data={studiesData.tableData}
-              columns={tableColumns}
-              filename="עתודאים_לימודים"
+            <StatCard
+              title="מסיימי שנה ד׳"
+              value={studiesData.fourthYear}
+              icon={Calendar}
+              color="cyan"
             />
           </div>
-        </CardHeader>
-        <CardContent>
-          <DataTable
-            data={studiesData.tableData}
-            columns={tableColumns}
-            pageSize={15}
-            filterableColumns={["cohort", "institution", "faculty", "year"]}
-          />
-        </CardContent>
-      </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  מוסדות לימוד מובילים
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="מוסדות לימוד"
+                    description="התפלגות עתודאים לפי מוסד אקדמי"
+                    dataSource="אינדקס 26 - מוסד אקדמי"
+                    calculation="ספירת עתודאים בכל מוסד"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef1}
+                    data={studiesData.institutionData}
+                    filename="מוסדות_לימוד"
+                    dataColumns={[
+                      { key: "institution", label: "מוסד" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef1}>
+                  {studiesData.institutionData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={studiesData.institutionData}
+                      dataKey="institution"
+                      valueLabel="מספר עתודאים"
+                      singleColor="#3b82f6"
+                      height={Math.max(
+                        200,
+                        studiesData.institutionData.length * 35,
+                      )}
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  חתך פקולטות
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="פקולטות"
+                    description="התפלגות עתודאים לפי תחום לימוד"
+                    dataSource="אינדקס 27 - פקולטה"
+                    calculation="ספירת עתודאים בכל פקולטה"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef2}
+                    data={studiesData.facultyData}
+                    filename="פקולטות"
+                    dataColumns={[
+                      { key: "faculty", label: "פקולטה" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef2}>
+                  {studiesData.facultyData.length > 0 ? (
+                    <ReusablePieChart
+                      data={studiesData.facultyData}
+                      dataKey="faculty"
+                      title=""
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  שנת לימודים
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="שנת לימודים"
+                    description="התפלגות עתודאים לפי שנה בתואר"
+                    dataSource="אינדקס 29 - שנה בתואר"
+                    calculation="ספירת עתודאים בכל שנה"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef3}
+                    data={studiesData.yearData}
+                    filename="שנות_לימוד"
+                    dataColumns={[
+                      { key: "year", label: "שנה" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef3}>
+                  {studiesData.yearData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={studiesData.yearData}
+                      dataKey="year"
+                      valueLabel="מספר עתודאים"
+                      singleColor="#06b6d4"
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-lg text-[#1e3a5f]">
+                  עתודאים לפי מחזור
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <ChartInfoButton
+                    title="עתודאים לפי מחזור"
+                    description="התפלגות עתודאים בלימודים לפי מחזור"
+                    dataSource="אינדקס 4 - מחזור"
+                    calculation="ספירת עתודאים לפי מחזור"
+                  />
+                  <ChartExportButton
+                    chartRef={chartRef4}
+                    data={studiesData.cohortData}
+                    filename="עתודאים_לפי_מחזור"
+                    dataColumns={[
+                      { key: "cohort", label: "מחזור" },
+                      { key: "count", label: "מספר" },
+                    ]}
+                  />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div ref={chartRef4}>
+                  {studiesData.cohortData.length > 0 ? (
+                    <HorizontalBarChart
+                      data={studiesData.cohortData}
+                      dataKey="cohort"
+                      valueLabel="מספר עתודאים"
+                      useCohortColors
+                    />
+                  ) : (
+                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                      אין נתונים
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg text-[#1e3a5f]">
+                טבלה אקדמית
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <ViewContactsButton
+                  data={studiesData.tableData}
+                  filterLabel="עתודאים בלימודים"
+                />
+                <TableExportButton
+                  data={studiesData.tableData}
+                  columns={tableColumns}
+                  filename="עתודאים_לימודים"
+                />
+              </div>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={studiesData.tableData}
+                columns={tableColumns}
+                pageSize={15}
+                filterableColumns={["cohort", "institution", "faculty", "year"]}
+              />
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   );
 }
