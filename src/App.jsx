@@ -1,4 +1,3 @@
-import { Toaster } from "./components/ui/toaster";
 import { pagesConfig } from "./pages.config";
 import {
   BrowserRouter as Router,
@@ -80,7 +79,6 @@ function App() {
       <Router>
         <AuthenticatedApp />
       </Router>
-      <Toaster />
     </AuthProvider>
   );
 }
