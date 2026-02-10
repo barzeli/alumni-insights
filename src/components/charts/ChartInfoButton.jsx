@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "../ui/dialog";
 
 export default function ChartInfoButton({
@@ -26,6 +27,9 @@ export default function ChartInfoButton({
       <DialogContent className="max-w-md" dir="rtl">
         <DialogHeader>
           <DialogTitle className="text-[#1e3a5f]">{title}</DialogTitle>
+          <DialogDescription className="sr-only">
+            מידע נוסף אודות {title}
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 text-sm">
           {description && (

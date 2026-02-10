@@ -290,6 +290,19 @@ export async function syncWithGoogleDrive(config, accessToken) {
 
   console.log("[Sync] Starting Google Drive sync...");
 
+  // Set loading status
+  const initialStatus = {
+    status: "loading",
+    lastSync: localStorage.getItem("googleSheetsSyncStatus")
+      ? JSON.parse(localStorage.getItem("googleSheetsSyncStatus")).lastSync
+      : null,
+    recordCount: localStorage.getItem("googleSheetsSyncStatus")
+      ? JSON.parse(localStorage.getItem("googleSheetsSyncStatus")).recordCount
+      : 0,
+  };
+  localStorage.setItem("googleSheetsSyncStatus", JSON.stringify(initialStatus));
+  window.dispatchEvent(new Event("syncStatusUpdated"));
+
   // 1. Sync Graduates if ID exists
   if (graduatesSheetId) {
     try {

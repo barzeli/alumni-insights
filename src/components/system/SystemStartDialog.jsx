@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -188,6 +194,10 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
               הגדרת מערכת
             </DialogTitle>
           </div>
+          <DialogDescription className="sr-only">
+            הגדרת מקורות הנתונים למערכת: סנכרון אוטומטי מ-Google Sheets או העלאת
+            קבצים ידנית.
+          </DialogDescription>
         </DialogHeader>
 
         <Tabs

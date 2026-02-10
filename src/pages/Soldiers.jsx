@@ -44,6 +44,17 @@ export default function Soldiers() {
   const { surveyData, hasSurveyData } = useSurveyData();
   const [filters, setFilters] = useState({ cohorts: [], pronouns: [] });
 
+  const tableColumns = [
+    { key: "full_name", label: "שם מלא" },
+    { key: "cohort", label: "מחזור" },
+    { key: "soldier_type", label: "סוג שירות" },
+    { key: "role_type", label: "אופי תפקיד" },
+    { key: "command_course", label: "קורס פיקוד" },
+    { key: "enlistment_date", label: "תאריך גיוס" },
+    { key: "release_date", label: "תאריך שחרור" },
+    { key: "courses_done", label: "קורסים" },
+  ];
+
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
   const chartRef3 = useRef(null);

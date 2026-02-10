@@ -23,6 +23,15 @@ import ViewContactsButton from "../components/common/ViewContactsButton";
 export default function PreArmy() {
   const { surveyData, hasSurveyData } = useSurveyData();
   const [filters, setFilters] = useState({ cohorts: [], pronouns: [] });
+
+  const tableColumns = [
+    { key: "full_name", label: "שם מלא" },
+    { key: "cohort", label: "מחזור" },
+    { key: "enlistment_date", label: "תאריך גיוס" },
+    { key: "destination", label: "יעד גיוס" },
+    { key: "destination_detail", label: "פירוט יעד" },
+  ];
+
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
   const chartRef3 = useRef(null);

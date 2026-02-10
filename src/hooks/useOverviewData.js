@@ -1,12 +1,7 @@
 import { useState, useMemo } from "react";
 import { useSurveyData } from "./useSurveyData";
 import { STATUS_COLORS } from "../utils/colors";
-
-import {
-  getName,
-  getCohort,
-  getStatus,
-} from "../utils/surveyDataHelpers";
+import { getName, getCohort, getStatus } from "../utils/surveyDataHelpers";
 
 export const useOverviewData = () => {
   const {

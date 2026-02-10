@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge";
 
 export default function SyncStatusIndicator() {
   const [syncStatus, setSyncStatus] = useState({
-    status: "loading", // loading | success | error
+    status: "idle", // idle | loading | success | error
     lastSync: null,
     recordCount: 0,
   });
@@ -14,6 +14,8 @@ export default function SyncStatusIndicator() {
       const statusData = localStorage.getItem("googleSheetsSyncStatus");
       if (statusData) {
         setSyncStatus(JSON.parse(statusData));
+      } else {
+        setSyncStatus({ status: "idle", lastSync: null, recordCount: 0 });
       }
     };
 
@@ -28,6 +30,18 @@ export default function SyncStatusIndicator() {
   }, []);
 
   const { status, lastSync, recordCount } = syncStatus;
+
+  if (status === "idle" && !lastSync) {
+    return (
+      <Badge
+        variant="outline"
+        className="bg-gray-50 border-gray-200 text-gray-500 gap-1.5 px-2.5 py-1"
+      >
+        <Cloud className="w-3.5 h-3.5 opacity-50" />
+        <span className="text-xs font-medium">לא סונכרן</span>
+      </Badge>
+    );
+  }
 
   if (status === "loading") {
     return (
