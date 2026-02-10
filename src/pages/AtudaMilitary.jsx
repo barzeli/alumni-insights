@@ -16,23 +16,23 @@ import {
   Briefcase,
   ArrowRight,
 } from "lucide-react";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 import { useSurveyData } from "../hooks/useSurveyData";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 import {
   getValue,
   getName,
   getCohort,
   getStatus,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
+import ViewContactsButton from "../components/common/ViewContactsButton";
 
 export default function AtudaMilitary() {
   const { surveyData, hasSurveyData } = useSurveyData();

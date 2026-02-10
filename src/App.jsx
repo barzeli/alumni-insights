@@ -8,7 +8,7 @@ import {
 import { PageNotFound, Login } from "./pages";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UserNotRegisteredError from "./pages/UserNotRegisteredError";
-import AutoSyncManager from "./components/survey/AutoSyncManager";
+import AutoSyncManager from "./components/system/AutoSyncManager";
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];

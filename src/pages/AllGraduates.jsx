@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Users, Check, X, Eye, Phone, Mail, Filter } from "lucide-react";
-import DataTable from "../components/survey/DataTable";
+import DataTable from "../components/common/DataTable";
 import { useGraduatesFilter } from "../hooks/useGraduatesFilter";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -17,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import SurveyResponseViewer from "../components/survey/SurveyResponseViewer";
-import { TableExportButton } from "../components/export/ExportButton";
+import SurveyResponseViewer from "../components/common/SurveyResponseViewer";
+import { TableExportButton } from "../components/common/ExportButton";
 
 // Survey field options for filtering
 

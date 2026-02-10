@@ -17,22 +17,22 @@ import {
   Shield,
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { SimplePieLabel } from "../components/survey/PieChartLabel";
+import { SimplePieLabel } from "../components/charts/PieChartLabel";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 import {
   getValue,
   getName,
   getCohort,
   getStatus,
-} from "../components/survey/surveyDataHelpers";
-import GlobalFilters from "../components/survey/GlobalFilters";
+} from "../utils/surveyDataHelpers";
+import GlobalFilters from "../components/common/GlobalFilters";
 
 // הגדרת צבעים קבועה
 const ANSWER_COLORS = {

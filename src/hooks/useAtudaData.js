@@ -5,7 +5,7 @@ import {
   getName,
   getCohort,
   getStatus,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 
 export const useAtudaData = () => {
   const { surveyData, hasSurveyData } = useSurveyData();

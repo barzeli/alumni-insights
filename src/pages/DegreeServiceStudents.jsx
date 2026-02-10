@@ -10,22 +10,18 @@ import {
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { GraduationCap, Upload, AlertCircle } from "lucide-react";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
-import {
-  getValue,
-  getName,
-  getCohort,
-} from "../components/survey/surveyDataHelpers";
+} from "../components/common/ExportButton";
+import { getValue, getName, getCohort } from "../utils/surveyDataHelpers";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
-import StudyingSubNav from "../components/survey/StudyingSubNav";
+import ViewContactsButton from "../components/common/ViewContactsButton";
+import StudyingSubNav from "../components/layout/StudyingSubNav";
 
 export default function DegreeServiceStudents() {
   const { surveyData, hasSurveyData } = useSurveyData();

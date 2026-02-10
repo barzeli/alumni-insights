@@ -3,12 +3,8 @@ import {
   formatQuarterLabel,
   getQuarterKey,
   parseDate,
-} from "../components/survey/ChartColors";
-import {
-  getName,
-  getCohort,
-  getStatus,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/dateUtils";
+import { getName, getCohort, getStatus } from "../utils/surveyDataHelpers";
 
 // Helper functions for reading data
 const getEnlistmentDate = (row) => row.enlistment_date || "";

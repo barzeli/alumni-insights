@@ -20,24 +20,24 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 import { useSurveyData } from "../hooks/useSurveyData";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 import {
   getValue,
   getName,
   getCohort,
   isReleased,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
-import ReleasedSubNav from "../components/survey/ReleasedSubNav";
+import ViewContactsButton from "../components/common/ViewContactsButton";
+import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
 export default function ReleasedMilitary() {
   const { surveyData, hasSurveyData } = useSurveyData();

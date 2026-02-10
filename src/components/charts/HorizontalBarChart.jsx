@@ -9,7 +9,7 @@ import {
   Cell,
 } from "recharts";
 import ChartTooltip from "./ChartTooltip";
-import { getCohortColor } from "../survey/ChartColors";
+import { getCohortColor } from "../../utils/colors";
 
 // פונקציית צבעים ברירת מחדל
 const getDynamicColor = (index, offset = 0) => {

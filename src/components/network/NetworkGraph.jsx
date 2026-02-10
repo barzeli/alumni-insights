@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
 import { useSurveyData } from "../../hooks/useSurveyData";
-import { getCohortBarColors } from "../survey/ChartColors";
+import { getCohortBarColors } from "../../utils/colors";
 
 function normalizeStr(x) {
   return String(x ?? "").trim();

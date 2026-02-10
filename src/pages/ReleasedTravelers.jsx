@@ -11,24 +11,24 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { Plane, Upload, AlertCircle } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
 import ChartTooltip from "../components/charts/ChartTooltip";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { SimplePieLabel } from "../components/survey/PieChartLabel";
+import { SimplePieLabel } from "../components/charts/PieChartLabel";
 import {
   getValue,
   getName,
   getCohort,
   isReleased,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
-import ReleasedSubNav from "../components/survey/ReleasedSubNav";
+} from "../components/common/ExportButton";
+import ViewContactsButton from "../components/common/ViewContactsButton";
+import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
 const COLORS = [
   "#06b6d4",

@@ -28,8 +28,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./components/ui/dropdown-menu";
-import SystemStartDialog from "./components/survey/SystemStartDialog";
-import SyncStatusIndicator from "./components/survey/SyncStatusIndicator";
+import SystemStartDialog from "./components/system/SystemStartDialog";
+import SyncStatusIndicator from "./components/system/SyncStatusIndicator";
 import logo from "./assets/logo.jpg";
 
 const navItems = [

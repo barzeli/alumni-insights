@@ -10,21 +10,21 @@ import {
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { HelpCircle, Upload, AlertCircle, Heart } from "lucide-react";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
 import {
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
+} from "../components/common/ExportButton";
+import ViewContactsButton from "../components/common/ViewContactsButton";
 import {
   getValue,
   getName,
   getCohort,
   isReleased,
-} from "../components/survey/surveyDataHelpers";
-import ReleasedSubNav from "../components/survey/ReleasedSubNav";
+} from "../utils/surveyDataHelpers";
+import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
 export default function ReleasedLost() {
   const { surveyData, hasSurveyData } = useSurveyData();

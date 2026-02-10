@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Search, Users, X, Check, Network, ArrowDown } from "lucide-react";
 import { useSurveyData } from "../../hooks/useSurveyData";
-import { getCohortBarColors } from "../survey/ChartColors";
+import { getCohortBarColors } from "../../utils/colors";
 
 // --- פונקציות עזר ללוגיקה ---
 function edgeKey(a, b) {

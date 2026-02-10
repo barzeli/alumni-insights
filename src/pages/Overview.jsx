@@ -24,12 +24,12 @@ import {
   Cell,
   Tooltip,
 } from "recharts";
-import StatCard from "../components/survey/StatCard";
-import GlobalFilters from "../components/survey/GlobalFilters";
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import StatCard from "../components/common/StatCard";
+import GlobalFilters from "../components/common/GlobalFilters";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 import ChartTooltip from "../components/charts/ChartTooltip";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
-import { getCohortBarColors } from "../components/survey/ChartColors";
+import { getCohortBarColors } from "../utils/colors";
 import { useOverviewData } from "../hooks/useOverviewData";
 
 export default function Overview() {

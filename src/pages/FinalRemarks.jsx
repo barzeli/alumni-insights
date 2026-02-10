@@ -7,15 +7,15 @@ import {
 } from "../components/ui/card";
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { MessageSquare, AlertCircle } from "lucide-react";
-import StatCard from "../components/survey/StatCard";
+import StatCard from "../components/common/StatCard";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { PageExportButton } from "../components/export/ExportButton";
+import { PageExportButton } from "../components/common/ExportButton";
 import {
   getValue,
   getName,
   getCohort,
   getStatus,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 
 export default function FinalRemarks() {
   const { surveyData, hasSurveyData } = useSurveyData();

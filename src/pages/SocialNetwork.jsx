@@ -24,8 +24,8 @@ import {
 } from "lucide-react";
 import { useSurveyData } from "../hooks/useSurveyData";
 
-import { getValue, getName } from "../components/survey/surveyDataHelpers";
-import { getCohortBarColors } from "../components/survey/ChartColors";
+import { getValue, getName } from "../utils/surveyDataHelpers";
+import { getCohortBarColors } from "../utils/colors";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils/createPageUrl";
 import {

@@ -7,19 +7,19 @@ import {
 } from "../components/ui/card";
 import { Alert, AlertDescription } from "../components/ui/alert";
 import { Heart, AlertCircle, Calendar } from "lucide-react";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
-import GlobalFilters from "../components/survey/GlobalFilters";
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
+import GlobalFilters from "../components/common/GlobalFilters";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 import { useSurveyData } from "../hooks/useSurveyData";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
-import { parseDate as parseGlobalDate } from "../components/survey/ChartColors";
+import ViewContactsButton from "../components/common/ViewContactsButton";
+import { parseDate as parseGlobalDate } from "../utils/dateUtils";
 import {
   TableExportButton,
   PageExportButton,
   ChartExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 
 export default function NationalService() {
   const { surveyData, hasSurveyData } = useSurveyData();

@@ -11,24 +11,24 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { UserMinus, Upload, AlertCircle, Percent } from "lucide-react";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
-import StatCard from "../components/survey/StatCard";
+import StatCard from "../components/common/StatCard";
 
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 
 import { useSurveyData } from "../hooks/useSurveyData";
-import { PIE_COLORS } from "../components/survey/ChartColors";
+import { PIE_COLORS } from "../utils/colors";
 import {
   getValue,
   getName,
   getCohort,
   isReleased,
-} from "../components/survey/surveyDataHelpers";
+} from "../utils/surveyDataHelpers";
 
-import GlobalFilters from "../components/survey/GlobalFilters";
+import GlobalFilters from "../components/common/GlobalFilters";
 import {
   ChartExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
 
 export default function Released() {

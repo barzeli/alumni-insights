@@ -11,7 +11,7 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 import { Button } from "../components/ui/button";
 import { Upload, AlertCircle, GraduationCap, FileText } from "lucide-react";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { getValue } from "../components/survey/surveyDataHelpers";
+import { getValue } from "../utils/surveyDataHelpers";
 
 export default function StudyingDuringService() {
   const { surveyData, hasSurveyData } = useSurveyData();

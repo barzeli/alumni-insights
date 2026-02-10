@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import GlobalFilters from "../components/survey/GlobalFilters";
+import GlobalFilters from "../components/common/GlobalFilters";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils/createPageUrl";
 import {
@@ -21,19 +21,19 @@ import {
   BookOpen,
 } from "lucide-react";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
-import StatCard from "../components/survey/StatCard";
-import DataTable from "../components/survey/DataTable";
-import ChartInfoButton from "../components/survey/ChartInfoButton";
+import StatCard from "../components/common/StatCard";
+import DataTable from "../components/common/DataTable";
+import ChartInfoButton from "../components/charts/ChartInfoButton";
 import { useSurveyData } from "../hooks/useSurveyData";
 import { useSoldiersData } from "../hooks/useSoldiersData";
-import { getCohortColor } from "../components/survey/ChartColors";
+import { getCohortColor } from "../utils/colors";
 import {
   ChartExportButton,
   TableExportButton,
   PageExportButton,
-} from "../components/export/ExportButton";
+} from "../components/common/ExportButton";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
-import ViewContactsButton from "../components/survey/ViewContactsButton";
+import ViewContactsButton from "../components/common/ViewContactsButton";
 import {
   BarChart,
   Bar,

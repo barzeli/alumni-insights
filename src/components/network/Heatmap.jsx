@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Search, Users, X, LayoutGrid, ArrowDown } from "lucide-react";
 import { useSurveyData } from "../../hooks/useSurveyData";
-import { getCohortBarColors } from "../survey/ChartColors";
+import { getCohortBarColors } from "../../utils/colors";
 
 // פונקציית עזר לנרמול מחרוזות [cite: 6]
 function normalizeStr(x) {
