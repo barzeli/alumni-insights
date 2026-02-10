@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, RefreshCw, AlertCircle, Cloud } from "lucide-react";
+import { CheckCircle, RefreshCw, AlertCircle, Cloud, Key } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { useAuth } from "../../context/AuthContext";
 
 export default function SyncStatusIndicator() {
   const [syncStatus, setSyncStatus] = useState({
@@ -29,7 +30,21 @@ export default function SyncStatusIndicator() {
       window.removeEventListener("syncStatusUpdated", handleSyncUpdate);
   }, []);
 
+  const { isTokenExpired } = useAuth();
   const { status, lastSync, recordCount } = syncStatus;
+
+  if (isTokenExpired()) {
+    return (
+      <Badge
+        variant="outline"
+        className="bg-amber-50 border-amber-200 text-amber-700 gap-1.5 px-2.5 py-1 cursor-help"
+        title="פג תוקף החיבור - לחץ על רענון כדי להתחבר מחדש"
+      >
+        <Key className="w-3.5 h-3.5" />
+        <span className="text-xs font-medium">התחברות פגה</span>
+      </Badge>
+    );
+  }
 
   if (status === "idle" && !lastSync) {
     return (

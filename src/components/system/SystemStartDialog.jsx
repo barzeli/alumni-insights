@@ -34,7 +34,7 @@ import {
 } from "../../utils/googleDrive";
 
 export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
-  const { googleAccessToken } = useAuth();
+  const { googleAccessToken, googleLogin, isTokenExpired } = useAuth();
   const [activeTab, setActiveTab] = useState("auto");
 
   // Auto Sync State
@@ -66,8 +66,10 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
 
   // --- Auto Sync Logic ---
   const handleAutoSync = async () => {
-    if (!googleAccessToken) {
-      setError("יש להתחבר מחדש למערכת כדי לבצע סנכרון");
+    if (!googleAccessToken || isTokenExpired()) {
+      setError(
+        "פג תוקף ההרשאות מ-Google. אנא לחץ על 'רענון הרשאות' והתחבר מחדש.",
+      );
       return;
     }
 
@@ -277,9 +279,14 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
               onClick={handleAutoSync}
               disabled={
                 isLoading ||
-                (!autoSyncUrls.surveyUrl && !autoSyncUrls.graduatesUrl)
+                (!autoSyncUrls.surveyUrl && !autoSyncUrls.graduatesUrl) ||
+                isTokenExpired()
               }
-              className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg"
+              className={`w-full h-12 text-lg ${
+                isTokenExpired()
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
             >
               {isLoading ? (
                 <>
@@ -293,6 +300,26 @@ export default function SystemStartDialog({ open, onClose, onSurveyLoaded }) {
                 </>
               )}
             </Button>
+
+            {isTokenExpired() && (
+              <div className="space-y-3">
+                <Alert className="bg-amber-50 border-amber-200">
+                  <AlertCircle className="h-4 w-4 ml-2 text-amber-600" />
+                  <AlertDescription className="text-amber-800 text-sm">
+                    פג תוקף החיבור ל-Google Security. יש לרענן את הגישה לקבצים
+                    כדי להמשיך לסנכרן.
+                  </AlertDescription>
+                </Alert>
+                <Button
+                  variant="outline"
+                  onClick={() => googleLogin()}
+                  className="w-full border-amber-300 text-amber-700 hover:bg-amber-50 gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  רענון הרשאות Google
+                </Button>
+              </div>
+            )}
             {syncResults && (
               <div className="space-y-2">
                 {syncResults.graduates !== null && (

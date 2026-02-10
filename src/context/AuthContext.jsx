@@ -10,10 +10,13 @@ export const AuthProvider = ({ children }) => {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [authError, setAuthError] = useState(null);
   const [googleAccessToken, setGoogleAccessToken] = useState(null);
+  const [tokenExpiresAt, setTokenExpiresAt] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("auth_user");
     const savedToken = localStorage.getItem("google_access_token");
+    const savedExpiresAt = localStorage.getItem("google_token_expires_at");
+
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
@@ -22,9 +25,13 @@ export const AuthProvider = ({ children }) => {
         if (savedToken) {
           setGoogleAccessToken(savedToken);
         }
+        if (savedExpiresAt) {
+          setTokenExpiresAt(parseInt(savedExpiresAt, 10));
+        }
       } catch {
         localStorage.removeItem("auth_user");
         localStorage.removeItem("google_access_token");
+        localStorage.removeItem("google_token_expires_at");
       }
     }
     setIsLoadingAuth(false);
@@ -32,8 +39,14 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithToken = (tokenResponse) => {
     console.log("Logged in with token response:", tokenResponse);
+
+    // Calculate expiration
+    const expiresAt = Date.now() + tokenResponse.expires_in * 1000;
     setGoogleAccessToken(tokenResponse.access_token);
+    setTokenExpiresAt(expiresAt);
+
     localStorage.setItem("google_access_token", tokenResponse.access_token);
+    localStorage.setItem("google_token_expires_at", expiresAt.toString());
 
     // Fetch user info using the access token since we don't have an ID token here
     fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
@@ -91,8 +104,16 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     setGoogleAccessToken(null);
+    setTokenExpiresAt(null);
     localStorage.removeItem("auth_user");
     localStorage.removeItem("google_access_token");
+    localStorage.removeItem("google_token_expires_at");
+  };
+
+  const isTokenExpired = () => {
+    if (!googleAccessToken || !tokenExpiresAt) return true;
+    // Buffer of 5 minutes before actual expiration
+    return Date.now() > tokenExpiresAt - 5 * 60 * 1000;
   };
 
   return (
@@ -103,6 +124,8 @@ export const AuthProvider = ({ children }) => {
         isLoadingAuth,
         authError,
         googleAccessToken,
+        tokenExpiresAt,
+        isTokenExpired,
         login,
         googleLogin,
         logout,
