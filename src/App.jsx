@@ -1,18 +1,10 @@
-import { pagesConfig } from "./pages.config";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { PAGES, MAIN_PAGE } from "./pages.config";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { PageNotFound, Login } from "./pages";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UserNotRegisteredError from "./pages/UserNotRegisteredError";
 import AutoSyncManager from "./components/system/AutoSyncManager";
-
-const { Pages, Layout, mainPage } = pagesConfig;
-const mainPageKey = mainPage ?? Object.keys(Pages)[0];
-const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+import Layout from "./Layout";
 
 const LayoutWrapper = ({ children, currentPageName }) =>
   Layout ? (
@@ -40,22 +32,10 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/"
-        element={
-          isAuthenticated ? (
-            <LayoutWrapper currentPageName={mainPageKey}>
-              <MainPage />
-            </LayoutWrapper>
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      {Object.entries(Pages).map(([path, Page]) => (
+      {Object.entries(PAGES).map(([path, Page]) => (
         <Route
           key={path}
-          path={`/${path}`}
+          path={path === MAIN_PAGE ? "/" : `/${path}`}
           element={
             isAuthenticated ? (
               <LayoutWrapper currentPageName={path}>
@@ -76,9 +56,9 @@ function App() {
   return (
     <AuthProvider>
       <AutoSyncManager />
-      <Router>
+      <BrowserRouter>
         <AuthenticatedApp />
-      </Router>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

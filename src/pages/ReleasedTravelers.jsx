@@ -102,7 +102,7 @@ export default function ReleasedTravelers() {
             לא נמצאו נתוני סקר. יש להעלות קובץ סקר תחילה.
           </AlertDescription>
         </Alert>
-        <Link to={createPageUrl("Overview")}>
+        <Link to="/">
           <Button className="bg-[#0891b2] hover:bg-[#0891b2]/90 gap-2">
             <Upload className="w-4 h-4" />
             העלאת קובץ סקר

@@ -22,9 +22,10 @@ import {
   Soldiers,
   StudyingDuringService,
 } from "./pages";
-import __Layout from "./Layout";
 
-const PAGES = {
+export const MAIN_PAGE = "Overview";
+
+export const PAGES = {
   AllGraduates,
   Atuda,
   AtudaMilitary,
@@ -47,10 +48,4 @@ const PAGES = {
   SocialNetwork,
   Soldiers,
   StudyingDuringService,
-};
-
-export const pagesConfig = {
-  mainPage: "Overview",
-  Pages: PAGES,
-  Layout: __Layout,
 };
