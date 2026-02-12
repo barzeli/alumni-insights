@@ -1,4 +1,3 @@
-import * as React from "react";
 import { cva } from "class-variance-authority";
 
 import { cn } from "../../utils/className";
@@ -33,17 +32,15 @@ const buttonVariants = cva(
   },
 );
 
-const Button = React.forwardRef(
-  ({ className, variant, size, ...props }, ref) => {
-    return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
-);
+const Button = ({ className, variant, size, ref, ...props }) => {
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size, className }))}
+      ref={ref}
+      {...props}
+    />
+  );
+};
 Button.displayName = "Button";
 
 export { Button };
