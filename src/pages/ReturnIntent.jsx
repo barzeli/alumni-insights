@@ -7,7 +7,7 @@ import {
 } from "../components/ui/card";
 import { RotateCcw, UserCheck, Shield, AlertCircle } from "lucide-react";
 import NoDataView from "../components/common/NoDataView";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, ResponsiveContainer, Legend } from "recharts";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
@@ -267,16 +267,9 @@ export default function ReturnIntent() {
                               fontWeight="bold"
                             />
                           )}
-                        >
-                          {returnData.releasedPieData.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={entry.fill}
-                              strokeWidth={1}
-                              stroke="#fff"
-                            />
-                          ))}
-                        </Pie>
+                          strokeWidth={1}
+                          stroke="#fff"
+                        />
                         <Legend
                           verticalAlign="bottom"
                           height={36}
@@ -337,16 +330,9 @@ export default function ReturnIntent() {
                               fontWeight="bold"
                             />
                           )}
-                        >
-                          {returnData.soldierPieData.map((entry, index) => (
-                            <Cell
-                              key={`cell-${index}`}
-                              fill={entry.fill}
-                              strokeWidth={1}
-                              stroke="#fff"
-                            />
-                          ))}
-                        </Pie>
+                          strokeWidth={1}
+                          stroke="#fff"
+                        />
                         <Legend
                           verticalAlign="bottom"
                           height={36}

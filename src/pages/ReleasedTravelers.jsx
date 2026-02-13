@@ -7,7 +7,7 @@ import {
 } from "../components/ui/card";
 import { Plane } from "lucide-react";
 import NoDataView from "../components/common/NoDataView";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, ResponsiveContainer } from "recharts";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import ChartTooltip from "../components/charts/ChartTooltip";
@@ -71,9 +71,10 @@ export default function ReleasedTravelers() {
 
     const continentData = Object.entries(continentCounts)
       .sort(([, a], [, b]) => b - a)
-      .map(([continent, count]) => ({
+      .map(([continent, count], index) => ({
         continent,
         count,
+        fill: COLORS[index % COLORS.length],
         respondents: continentRespondents[continent] || [],
       }));
 
@@ -182,15 +183,8 @@ export default function ReleasedTravelers() {
                               data && setSelectedPieData(data.payload)
                             }
                             cursor="pointer"
-                          >
-                            {travelData.continentData.map((entry, index) => (
-                              <Cell
-                                key={`cell-${index}`}
-                                fill={COLORS[index % COLORS.length]}
-                                strokeWidth={2}
-                              />
-                            ))}
-                          </Pie>
+                            strokeWidth={2}
+                          />
                         </PieChart>
                       </ResponsiveContainer>
                       {selectedPieData && (

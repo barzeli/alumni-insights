@@ -14,7 +14,7 @@ import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
-  Cell,
+  Rectangle,
   Tooltip,
 } from "recharts";
 import StatCard from "../components/common/StatCard";
@@ -153,36 +153,34 @@ export default function Overview() {
                       yAxisId="left"
                       dataKey="respondents"
                       name="respondents"
-                      radius={[4, 4, 0, 0]}
                       onClick={(data) =>
                         data && setSelectedBarData(data.payload)
                       }
                       cursor="pointer"
-                    >
-                      {stats.cohortData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={getCohortBarColors(entry.name).main}
+                      shape={(props) => (
+                        <Rectangle
+                          {...props}
+                          fill={getCohortBarColors(props.payload.name).main}
+                          radius={[4, 4, 0, 0]}
                         />
-                      ))}
-                    </Bar>
+                      )}
+                    />
                     <Bar
                       yAxisId="right"
                       dataKey="percentage"
                       name="percentage"
-                      radius={[4, 4, 0, 0]}
                       onClick={(data) =>
                         data && setSelectedBarData(data.payload)
                       }
                       cursor="pointer"
-                    >
-                      {stats.cohortData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={getCohortBarColors(entry.name).light}
+                      shape={(props) => (
+                        <Rectangle
+                          {...props}
+                          fill={getCohortBarColors(props.payload.name).light}
+                          radius={[4, 4, 0, 0]}
                         />
-                      ))}
-                    </Bar>
+                      )}
+                    />
                     <XAxis
                       dataKey="name"
                       angle={-45}

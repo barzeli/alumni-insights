@@ -6,7 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
-  Cell,
+  Rectangle,
 } from "recharts";
 import ChartTooltip from "./ChartTooltip";
 import { getCohortColor } from "../../utils/colors";
@@ -117,15 +117,17 @@ const HorizontalBarChart = ({
 
           <Bar
             dataKey={valueKey}
-            radius={[0, 4, 4, 0]}
             barSize={25}
             onClick={handleBarClick}
             cursor="pointer"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={getBarColor(entry, index)} />
-            ))}
-          </Bar>
+            shape={(props) => (
+              <Rectangle
+                {...props}
+                fill={getBarColor(props.payload, props.index)}
+                radius={[0, 4, 4, 0]}
+              />
+            )}
+          />
 
           <XAxis type="number" allowDecimals={false} />
           <YAxis

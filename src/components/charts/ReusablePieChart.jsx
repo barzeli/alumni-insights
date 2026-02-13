@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, ResponsiveContainer } from "recharts";
 import ChartTooltip from "./ChartTooltip";
 
 // Simple Pie Label
@@ -87,12 +87,21 @@ export default function ReusablePieChart({
     }
   };
 
+  const coloredData = data.map((entry, index) => ({
+    ...entry,
+    fill:
+      entry[colorKey] ||
+      (colors
+        ? colors[index % colors.length]
+        : defaultColors[index % defaultColors.length]),
+  }));
+
   return (
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
           <Pie
-            data={data}
+            data={coloredData}
             cx="50%"
             cy="50%"
             labelLine
@@ -113,20 +122,8 @@ export default function ReusablePieChart({
             paddingAngle={paddingAngle}
             onClick={handlePieClick}
             cursor="pointer"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={
-                  entry[colorKey] ||
-                  (colors
-                    ? colors[index % colors.length]
-                    : defaultColors[index % defaultColors.length])
-                }
-                strokeWidth={2}
-              />
-            ))}
-          </Pie>
+            strokeWidth={2}
+          />
         </PieChart>
       </ResponsiveContainer>
 
