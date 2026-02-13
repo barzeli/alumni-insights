@@ -158,7 +158,7 @@ export default function ReleasedWork() {
                     height={Math.max(200, workData.workFieldData.length * 35)}
                   />
                 ) : (
-                  <div className="h-[200px] flex items-center justify-center text-gray-500">
+                  <div className="h-50 flex items-center justify-center text-gray-500">
                     אין נתוני תחומי עבודה
                   </div>
                 )}

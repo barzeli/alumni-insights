@@ -242,8 +242,8 @@ export default function ReturnIntent() {
                   ]}
                 />
               </CardHeader>
-              <CardContent className="flex-1 min-h-[350px]">
-                <div className="h-[350px] w-full" ref={chartRef1}>
+              <CardContent className="flex-1 min-h-87.5">
+                <div className="h-87.5 w-full" ref={chartRef1}>
                   {returnData.releasedPieData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart
@@ -312,8 +312,8 @@ export default function ReturnIntent() {
                   ]}
                 />
               </CardHeader>
-              <CardContent className="flex-1 min-h-[350px]">
-                <div className="h-[350px] w-full" ref={chartRef2}>
+              <CardContent className="flex-1 min-h-87.5">
+                <div className="h-87.5 w-full" ref={chartRef2}>
                   {returnData.soldierPieData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart

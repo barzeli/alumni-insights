@@ -233,7 +233,7 @@ export default function Released() {
                       )}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -280,7 +280,7 @@ export default function Released() {
                       filterKey="service_type"
                     />
                   ) : (
-                    <div className="h-[400px] flex items-center justify-center text-gray-500">
+                    <div className="h-100 flex items-center justify-center text-gray-500">
                       אין נתוני סוג שירות
                     </div>
                   )}

@@ -232,7 +232,7 @@ export default function DegreeServiceStudents() {
                       )}
                     />
                   ) : (
-                    <div className="h-[250px] flex items-center justify-center text-gray-500">
+                    <div className="h-62.5 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -269,7 +269,7 @@ export default function DegreeServiceStudents() {
                       )}
                     />
                   ) : (
-                    <div className="h-[250px] flex items-center justify-center text-gray-500">
+                    <div className="h-62.5 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -304,7 +304,7 @@ export default function DegreeServiceStudents() {
                     height={200}
                   />
                 ) : (
-                  <div className="h-[200px] flex items-center justify-center text-gray-500">
+                  <div className="h-50 flex items-center justify-center text-gray-500">
                     אין נתונים
                   </div>
                 )}

@@ -253,7 +253,7 @@ export default function NationalService() {
                       height={Math.max(220, serviceData.startData.length * 40)}
                     />
                   ) : (
-                    <div className="h-[220px] flex items-center justify-center text-gray-500">
+                    <div className="h-55 flex items-center justify-center text-gray-500">
                       אין נתוני תאריכי התחלה
                     </div>
                   )}
@@ -297,7 +297,7 @@ export default function NationalService() {
                       height={Math.max(220, serviceData.endData.length * 40)}
                     />
                   ) : (
-                    <div className="h-[220px] flex items-center justify-center text-gray-500">
+                    <div className="h-55 flex items-center justify-center text-gray-500">
                       אין נתוני תאריכי סיום
                     </div>
                   )}

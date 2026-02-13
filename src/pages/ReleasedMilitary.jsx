@@ -272,7 +272,7 @@ export default function ReleasedMilitary() {
                       useCohortColors
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתוני שירות קבע
                     </div>
                   )}
@@ -306,7 +306,7 @@ export default function ReleasedMilitary() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div ref={chartRef2} className="h-[350px]">
+                <div ref={chartRef2} className="h-87.5">
                   {militaryData.pikudData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
@@ -392,7 +392,7 @@ export default function ReleasedMilitary() {
                       )}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתוני אופי תפקיד
                     </div>
                   )}

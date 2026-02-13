@@ -165,7 +165,7 @@ export default function HeatmapAnalysis() {
             <p className="text-xs font-semibold text-slate-500 flex items-center gap-1 uppercase tracking-wider">
               <ArrowDown className="w-3 h-3" /> רשימה מלאה לפי מחזורים
             </p>
-            <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
+            <div className="max-h-50 overflow-y-auto pr-2 custom-scrollbar space-y-6">
               {groupedGraduates.map(([cohort, grads]) => (
                 <div key={cohort} className="space-y-3">
                   <div className="flex items-center gap-2 sticky top-0 bg-slate-50 py-1 z-10">
@@ -255,7 +255,7 @@ export default function HeatmapAnalysis() {
                       backgroundColor: getCohortBarColors(item.cohort).main,
                     }}
                   />
-                  <span className="text-[11px] font-bold text-slate-800 leading-tight min-h-[32px] flex items-center justify-center">
+                  <span className="text-[11px] font-bold text-slate-800 leading-tight min-h-8 flex items-center justify-center">
                     {item.name}
                   </span>
                   <div className={`text-xl font-black mt-2 ${textColor}`}>

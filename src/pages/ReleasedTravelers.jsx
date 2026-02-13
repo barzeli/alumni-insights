@@ -152,7 +152,7 @@ export default function ReleasedTravelers() {
                 />
               </CardHeader>
               <CardContent>
-                <div className="h-[400px]" ref={chartRef1}>
+                <div className="h-100" ref={chartRef1}>
                   {travelData.continentData.length > 0 ? (
                     <>
                       <ResponsiveContainer width="100%" height="100%">

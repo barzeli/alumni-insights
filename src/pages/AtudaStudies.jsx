@@ -281,7 +281,7 @@ export default function AtudaStudies() {
                       )}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -321,7 +321,7 @@ export default function AtudaStudies() {
                       title=""
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -362,7 +362,7 @@ export default function AtudaStudies() {
                       singleColor="#06b6d4"
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -403,7 +403,7 @@ export default function AtudaStudies() {
                       useCohortColors
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}

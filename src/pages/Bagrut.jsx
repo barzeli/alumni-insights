@@ -154,7 +154,7 @@ export default function Bagrut() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center h-[200px]">
+                <div className="flex items-center justify-center h-50">
                   <div className="text-center">
                     <p className="text-5xl font-bold text-orange-500">
                       {bagrutData.bagrutCount}
@@ -191,7 +191,7 @@ export default function Bagrut() {
                       height={200}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center">
+                    <div className="h-50 flex items-center justify-center">
                       <div className="text-center">
                         <p className="text-5xl font-bold text-purple-500">
                           {bagrutData.psychometricCount}

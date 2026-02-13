@@ -110,7 +110,7 @@ export default function ChartTooltip({
               </Button>
             </div>
 
-            <div className="overflow-y-auto bg-gradient-to-b from-gray-50 to-gray-100 rounded-lg p-3 border border-gray-200 custom-scrollbar">
+            <div className="overflow-y-auto bg-linear-to-b from-gray-50 to-gray-100 rounded-lg p-3 border border-gray-200 custom-scrollbar">
               <ul className="text-sm space-y-2">
                 {names.map((person, idx) => (
                   <li

@@ -964,7 +964,7 @@ export default function NetworkGraph({ data }) {
           </Button>
 
           {/* SEARCH */}
-          <div className="w-[420px] relative" ref={searchWrapRef}>
+          <div className="w-105 relative" ref={searchWrapRef}>
             <Input
               ref={searchInputRef}
               placeholder="חפש/י בוגר/ת לבחירה…"
@@ -974,7 +974,7 @@ export default function NetworkGraph({ data }) {
             />
 
             {isSearchOpen && (
-              <div className="absolute z-10 mt-1 w-full bg-white border rounded-md shadow-sm max-h-[280px] overflow-auto">
+              <div className="absolute z-10 mt-1 w-full bg-white border rounded-md shadow-sm max-h-70 overflow-auto">
                 {filteredSearch.length > 0 ? (
                   filteredSearch.map((g) => (
                     <button
@@ -1022,14 +1022,14 @@ export default function NetworkGraph({ data }) {
 
         <div className="flex gap-3">
           {/* COHORT CHECKBOX LIST */}
-          <div className="w-[340px] shrink-0">
+          <div className="w-85 shrink-0">
             <div className="border rounded-xl p-2">
               <div className="text-sm font-semibold mb-2">
                 בחירת בוגרים לפי מחזור
               </div>
 
               {/* שינוי יחיד: פריסת הבחירה כמו במטריצה (כותרת מחזור + Grid) */}
-              <div className="max-h-[640px] overflow-auto pr-1 space-y-6">
+              <div className="max-h-160 overflow-auto pr-1 space-y-6">
                 {groupedGraduates.map((group) => (
                   <div key={group.cohort} className="space-y-3">
                     <div className="flex items-center gap-2 sticky top-0 bg-white py-1 z-10">

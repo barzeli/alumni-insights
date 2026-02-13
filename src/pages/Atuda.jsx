@@ -177,7 +177,7 @@ export default function Atuda() {
                       height={Math.max(200, atudaData.stageData.length * 40)}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}
@@ -218,7 +218,7 @@ export default function Atuda() {
                       useCohortColors
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center text-gray-500">
+                    <div className="h-50 flex items-center justify-center text-gray-500">
                       אין נתונים
                     </div>
                   )}

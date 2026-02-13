@@ -159,7 +159,7 @@ export default function DataTable({
         <div className="p-4 border-b bg-gray-50 space-y-3">
           <div className="flex flex-wrap gap-3 items-center">
             {searchable && (
-              <div className="relative w-full sm:w-auto sm:min-w-[200px]">
+              <div className="relative w-full sm:w-auto sm:min-w-50">
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   placeholder="חיפוש חופשי..."
@@ -184,7 +184,7 @@ export default function DataTable({
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className={`w-[180px] justify-between bg-white ${hasSelection ? "border-[#1e3a5f] text-[#1e3a5f]" : ""}`}
+                      className={`w-45 justify-between bg-white ${hasSelection ? "border-[#1e3a5f] text-[#1e3a5f]" : ""}`}
                     >
                       <div className="flex items-center gap-2 truncate">
                         <Filter className="w-4 h-4 shrink-0" />
@@ -197,8 +197,8 @@ export default function DataTable({
                       <ChevronDown className="w-4 h-4 shrink-0" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[250px] p-2" align="start">
-                    <div className="space-y-1 max-h-[300px] overflow-y-auto">
+                  <PopoverContent className="w-62.5 p-2" align="start">
+                    <div className="space-y-1 max-h-75 overflow-y-auto">
                       {filterOptions[colKey].map((option) => (
                         <div
                           key={option}

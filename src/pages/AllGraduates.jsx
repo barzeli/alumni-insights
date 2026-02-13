@@ -176,7 +176,7 @@ export default function AllGraduates() {
       <Card className="bg-gray-50">
         <CardContent className="pt-4">
           <div className="flex flex-wrap gap-4 items-end">
-            <div className="flex-1 min-w-[150px]">
+            <div className="flex-1 min-w-37.5">
               <label className="text-sm text-gray-600 block mb-1">מחזור</label>
               <Select value={cohortFilter} onValueChange={setCohortFilter}>
                 <SelectTrigger>
@@ -193,7 +193,7 @@ export default function AllGraduates() {
               </Select>
             </div>
 
-            <div className="flex-1 min-w-[150px]">
+            <div className="flex-1 min-w-37.5">
               <label className="text-sm text-gray-600 block mb-1">מין</label>
               <Select value={genderFilter} onValueChange={setGenderFilter}>
                 <SelectTrigger>
@@ -207,7 +207,7 @@ export default function AllGraduates() {
               </Select>
             </div>
 
-            <div className="flex-1 min-w-[150px]">
+            <div className="flex-1 min-w-37.5">
               <label className="text-sm text-gray-600 block mb-1">
                 מילוי סקר
               </label>

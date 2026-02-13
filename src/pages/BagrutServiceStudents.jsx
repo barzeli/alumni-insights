@@ -167,7 +167,7 @@ export default function BagrutServiceStudents() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center h-[200px]">
+                <div className="flex items-center justify-center h-50">
                   <div className="text-center">
                     <p className="text-5xl font-bold text-orange-500">
                       {bagrutData.bagrutCount}
@@ -204,7 +204,7 @@ export default function BagrutServiceStudents() {
                       height={200}
                     />
                   ) : (
-                    <div className="h-[200px] flex items-center justify-center">
+                    <div className="h-50 flex items-center justify-center">
                       <div className="text-center text-gray-500">
                         <Brain className="w-12 h-12 mx-auto mb-2 opacity-20" />
                         <p>אין נתוני סטטוס פסיכומטרי</p>

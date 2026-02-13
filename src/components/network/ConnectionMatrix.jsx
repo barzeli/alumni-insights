@@ -186,7 +186,7 @@ export default function ConnectionMatrix({ data }) {
             </div>
 
             {isSearchOpen && searchTerm.trim() && (
-              <div className="absolute top-full right-0 left-0 mt-1 bg-white border rounded-md shadow-xl z-[100] max-h-[300px] overflow-y-auto">
+              <div className="absolute top-full right-0 left-0 mt-1 bg-white border rounded-md shadow-xl z-100 max-h-75 overflow-y-auto">
                 {filteredSearch.length ? (
                   filteredSearch.map((g) => (
                     <button
@@ -226,7 +226,7 @@ export default function ConnectionMatrix({ data }) {
             <p className="text-xs font-semibold text-slate-500 flex items-center gap-1 uppercase tracking-wider">
               <ArrowDown className="w-3 h-3" /> רשימה מלאה לפי מחזורים
             </p>
-            <div className="max-h-[200px] overflow-y-auto pr-2 custom-scrollbar space-y-6">
+            <div className="max-h-50 overflow-y-auto pr-2 custom-scrollbar space-y-6">
               {groupedGraduates.map(([cohort, grads]) => (
                 <div key={cohort} className="space-y-3">
                   <div className="flex items-center gap-2 sticky top-0 bg-slate-50 py-1 z-10">
@@ -283,23 +283,23 @@ export default function ConnectionMatrix({ data }) {
               לא נמצאו משיבים התואמים את הסינון.
             </div>
           ) : (
-            <div className="overflow-auto max-h-[700px]">
+            <div className="overflow-auto max-h-175">
               <table className="border-collapse text-[10px] w-full">
                 <thead className="sticky top-0 z-30 shadow-sm">
                   <tr className="bg-slate-100">
-                    <th className="sticky right-0 z-40 bg-slate-100 p-3 border text-right min-w-[200px] font-bold">
+                    <th className="sticky right-0 z-40 bg-slate-100 p-3 border text-right min-w-50 font-bold">
                       רשת קשרים (שורות)
                     </th>
                     {matrixColumns.map((col, i) => (
                       <th
                         key={col.id}
-                        className="p-2 border min-w-[45px] text-center align-bottom bg-slate-50"
+                        className="p-2 border min-w-11.25 text-center align-bottom bg-slate-50"
                       >
                         <div className="flex flex-col items-center">
                           <span className="text-[8px] text-slate-400 mb-1">
                             {i + 1}
                           </span>
-                          <span className="font-bold whitespace-nowrap rotate-180 [writing-mode:vertical-lr] min-h-[160px] py-4 text-[#1e3a5f]">
+                          <span className="font-bold whitespace-nowrap rotate-180 [writing-mode:vertical-lr] min-h-40 py-4 text-[#1e3a5f]">
                             {col.name}
                           </span>
                         </div>
@@ -330,7 +330,7 @@ export default function ConnectionMatrix({ data }) {
                                   .main,
                               }}
                             />
-                            <span className="truncate max-w-[150px]">
+                            <span className="truncate max-w-37.5">
                               {row.name}
                             </span>
                             {isSelected && (

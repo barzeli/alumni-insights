@@ -119,7 +119,7 @@ export default function FinalRemarks() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {remarksData?.sortedStatuses.map((status) => (
               <Card key={status} className="overflow-hidden">
-                <CardHeader className="bg-gradient-to-l from-[#1e3a5f] to-[#0891b2] text-white">
+                <CardHeader className="bg-linear-to-l from-[#1e3a5f] to-[#0891b2] text-white">
                   <CardTitle className="text-lg flex items-center justify-between">
                     <span>{status}</span>
                     <span className="text-sm bg-white/20 px-2 py-1 rounded">
@@ -127,7 +127,7 @@ export default function FinalRemarks() {
                     </span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 max-h-[400px] overflow-y-auto space-y-3">
+                <CardContent className="p-4 max-h-100 overflow-y-auto space-y-3">
                   {remarksData.remarksByStatus[status].map((item, idx) => (
                     <div
                       key={idx}

@@ -103,7 +103,7 @@ export default function Layout({ children, currentPageName }) {
       `}</style>
 
       {/* Header */}
-      <header className="bg-gradient-to-l from-[#1e3a5f] to-[#0891b2] text-white shadow-lg sticky top-0 z-50">
+      <header className="bg-linear-to-l from-[#1e3a5f] to-[#0891b2] text-white shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
