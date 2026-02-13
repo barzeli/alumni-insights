@@ -7,16 +7,7 @@ import {
 } from "../components/ui/card";
 import { Shield, Star, MapPin, List } from "lucide-react";
 import NoDataView from "../components/common/NoDataView";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import StackedBarChart from "../components/charts/StackedBarChart";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
@@ -308,44 +299,21 @@ export default function ReleasedMilitary() {
               <CardContent>
                 <div ref={chartRef2} className="h-87.5">
                   {militaryData.pikudData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={militaryData.pikudData}
-                        layout="vertical"
-                        margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis type="number" />
-                        <YAxis
-                          dataKey="cohort"
-                          type="category"
-                          width={150}
-                          textAnchor="end"
-                          tickMargin={10}
-                          tick={{ fontSize: 12 }}
-                        />
-                        <Tooltip />
-                        <Legend />
-                        <Bar
-                          dataKey="קצונה"
-                          stackId="a"
-                          fill="#1e3a5f"
-                          name="קצונה"
-                        />
-                        <Bar
-                          dataKey="נגד"
-                          stackId="a"
-                          fill="#0891b2"
-                          name="נגד"
-                        />
-                        <Bar
-                          dataKey="חייל חובה"
-                          stackId="a"
-                          fill="#7c3aed"
-                          name="חייל חובה"
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <StackedBarChart
+                      data={militaryData.pikudData}
+                      categoryKey="cohort"
+                      stacks={[
+                        { dataKey: "קצונה", name: "קצונה", color: "#1e3a5f" },
+                        { dataKey: "נגד", name: "נגד", color: "#0891b2" },
+                        {
+                          dataKey: "חייל חובה",
+                          name: "חייל חובה",
+                          color: "#7c3aed",
+                        },
+                      ]}
+                      horizontal
+                      height="100%"
+                    />
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-500">
                       אין נתוני מפקדים

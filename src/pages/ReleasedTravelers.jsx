@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -7,12 +7,10 @@ import {
 } from "../components/ui/card";
 import { Plane } from "lucide-react";
 import NoDataView from "../components/common/NoDataView";
-import { PieChart, Pie, ResponsiveContainer } from "recharts";
+import ReusablePieChart from "../components/charts/ReusablePieChart";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
-import ChartTooltip from "../components/charts/ChartTooltip";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { SimplePieLabel } from "../components/charts/PieChartLabel";
 import {
   getValue,
   getName,
@@ -39,7 +37,6 @@ const COLORS = [
 
 export default function ReleasedTravelers() {
   const { surveyData, hasSurveyData } = useSurveyData();
-  const [selectedPieData, setSelectedPieData] = useState(null);
   const chartRef1 = useRef(null);
 
   const travelData = useMemo(() => {
@@ -71,10 +68,9 @@ export default function ReleasedTravelers() {
 
     const continentData = Object.entries(continentCounts)
       .sort(([, a], [, b]) => b - a)
-      .map(([continent, count], index) => ({
+      .map(([continent, count]) => ({
         continent,
         count,
-        fill: COLORS[index % COLORS.length],
         respondents: continentRespondents[continent] || [],
       }));
 
@@ -155,48 +151,15 @@ export default function ReleasedTravelers() {
               <CardContent>
                 <div className="h-100" ref={chartRef1}>
                   {travelData.continentData.length > 0 ? (
-                    <>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={travelData.continentData}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={true}
-                            label={(props) => (
-                              <SimplePieLabel
-                                {...props}
-                                outerRadius={props.outerRadius + 40}
-                                name={props.continent}
-                                value={props.value}
-                                fontSize={14}
-                                fontWeight="bold"
-                              />
-                            )}
-                            outerRadius={80}
-                            innerRadius={40}
-                            fill="#8884d8"
-                            dataKey="count"
-                            nameKey="continent"
-                            paddingAngle={5}
-                            onClick={(data) =>
-                              data && setSelectedPieData(data.payload)
-                            }
-                            cursor="pointer"
-                            strokeWidth={2}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      {selectedPieData && (
-                        <ChartTooltip
-                          payload={selectedPieData}
-                          onClose={() => setSelectedPieData(null)}
-                          nameKey="continent"
-                          valueLabel="מספר"
-                          filterKey="travel_continent"
-                        />
-                      )}
-                    </>
+                    <ReusablePieChart
+                      data={travelData.continentData}
+                      dataKey="count"
+                      nameKey="continent"
+                      colors={COLORS}
+                      height={400}
+                      valueLabel="מספר"
+                      filterKey="travel_continent"
+                    />
                   ) : (
                     <div className="h-full flex items-center justify-center text-gray-500">
                       אין נתוני יבשות

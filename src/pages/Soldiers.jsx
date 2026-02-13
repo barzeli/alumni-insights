@@ -29,16 +29,7 @@ import {
 } from "../components/common/ExportButton";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import StackedBarChart from "../components/charts/StackedBarChart";
 
 export default function Soldiers() {
   const { surveyData, hasSurveyData } = useSurveyData();
@@ -379,49 +370,25 @@ export default function Soldiers() {
             <CardContent>
               <div ref={chartRef5}>
                 {soldierData.commandersData.length > 0 ? (
-                  <ResponsiveContainer
-                    width="100%"
+                  <StackedBarChart
+                    data={soldierData.commandersData}
+                    categoryKey="cohort"
+                    stacks={[
+                      { dataKey: "officer", name: "קצינים", color: "#1e3a5f" },
+                      { dataKey: "nco", name: "נגדים", color: "#0891b2" },
+                      {
+                        dataKey: "commander",
+                        name: 'מש"קים/מ"כים',
+                        color: "#7c3aed",
+                      },
+                    ]}
+                    horizontal
                     height={Math.max(
                       300,
                       soldierData.commandersData.length * 60,
                     )}
-                  >
-                    <BarChart
-                      data={soldierData.commandersData}
-                      layout="vertical"
-                      margin={{ top: 10, right: 30, left: 120, bottom: 10 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <Tooltip />
-                      <Legend />
-                      <Bar
-                        dataKey="officer"
-                        stackId="a"
-                        name="קצינים"
-                        fill="#1e3a5f"
-                      />
-                      <Bar
-                        dataKey="nco"
-                        stackId="a"
-                        name="נגדים"
-                        fill="#0891b2"
-                      />
-                      <Bar
-                        dataKey="commander"
-                        stackId="a"
-                        name='מש"קים/מ"כים'
-                        fill="#7c3aed"
-                      />
-                      <XAxis type="number" />
-                      <YAxis
-                        dataKey="cohort"
-                        type="category"
-                        width={150}
-                        textAnchor="end"
-                        tickMargin={10}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
+                    margin={{ top: 10, right: 30, left: 120, bottom: 10 }}
+                  />
                 ) : (
                   <div className="h-50 flex items-center justify-center text-gray-500">
                     אין נתוני מפקדים

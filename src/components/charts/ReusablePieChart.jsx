@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PieChart, Pie, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, ResponsiveContainer, Legend } from "recharts";
 import ChartTooltip from "./ChartTooltip";
 
 // Simple Pie Label
@@ -54,6 +54,10 @@ export default function ReusablePieChart({
   showPercentage = true,
   totalForPercentage = null,
   filterKey = null,
+  showLegend = false,
+  stroke,
+  strokeWidth = 2,
+  labelLine = true,
 }) {
   const [selectedData, setSelectedData] = useState(null);
   const total =
@@ -104,7 +108,7 @@ export default function ReusablePieChart({
             data={coloredData}
             cx="50%"
             cy="50%"
-            labelLine
+            labelLine={labelLine}
             label={(props) => (
               <SimplePieLabel
                 {...props}
@@ -122,8 +126,12 @@ export default function ReusablePieChart({
             paddingAngle={paddingAngle}
             onClick={handlePieClick}
             cursor="pointer"
-            strokeWidth={2}
+            strokeWidth={strokeWidth}
+            stroke={stroke}
           />
+          {showLegend && (
+            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+          )}
         </PieChart>
       </ResponsiveContainer>
 

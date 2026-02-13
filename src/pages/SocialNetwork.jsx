@@ -19,16 +19,7 @@ import { useSurveyData } from "../hooks/useSurveyData";
 
 import { getValue, getName } from "../utils/surveyDataHelpers";
 import { getCohortBarColors } from "../utils/colors";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import StackedBarChart from "../components/charts/StackedBarChart";
 import NetworkGraph from "../components/network/NetworkGraph";
 import ConnectionMatrix from "../components/network/ConnectionMatrix";
 import Heatmap from "../components/network/Heatmap";
@@ -385,23 +376,17 @@ function FamilyStatusByCohort({ data }) {
         <CardTitle className="text-lg">מצב משפחתי לפי מחזור</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData.chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="cohort" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            {chartData.statuses.map((status, index) => (
-              <Bar
-                key={status}
-                dataKey={status}
-                fill={COLORS[index % COLORS.length]}
-                name={status}
-              />
-            ))}
-          </BarChart>
-        </ResponsiveContainer>
+        <StackedBarChart
+          data={chartData.chartData}
+          categoryKey="cohort"
+          stacks={chartData.statuses.map((status, index) => ({
+            dataKey: status,
+            name: status,
+            color: COLORS[index % COLORS.length],
+          }))}
+          horizontal={false}
+          height={300}
+        />
       </CardContent>
     </Card>
   );

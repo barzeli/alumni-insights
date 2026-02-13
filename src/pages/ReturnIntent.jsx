@@ -7,11 +7,10 @@ import {
 } from "../components/ui/card";
 import { RotateCcw, UserCheck, Shield, AlertCircle } from "lucide-react";
 import NoDataView from "../components/common/NoDataView";
-import { PieChart, Pie, ResponsiveContainer, Legend } from "recharts";
+import ReusablePieChart from "../components/charts/ReusablePieChart";
 import StatCard from "../components/common/StatCard";
 import DataTable from "../components/common/DataTable";
 import { useSurveyData } from "../hooks/useSurveyData";
-import { SimplePieLabel } from "../components/charts/PieChartLabel";
 import {
   ChartExportButton,
   TableExportButton,
@@ -245,38 +244,21 @@ export default function ReturnIntent() {
               <CardContent className="flex-1 min-h-87.5">
                 <div className="h-87.5 w-full" ref={chartRef1}>
                   {returnData.releasedPieData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart
-                        margin={{ top: 20, right: 40, left: 40, bottom: 20 }}
-                      >
-                        <Pie
-                          data={returnData.releasedPieData}
-                          cx="50%"
-                          cy="45%"
-                          innerRadius={60}
-                          outerRadius={100}
-                          paddingAngle={2}
-                          dataKey="count"
-                          nameKey="answer"
-                          labelLine={false}
-                          label={(props) => (
-                            <SimplePieLabel
-                              {...props}
-                              outerRadius={props.outerRadius + 20}
-                              fontSize={14}
-                              fontWeight="bold"
-                            />
-                          )}
-                          strokeWidth={1}
-                          stroke="#fff"
-                        />
-                        <Legend
-                          verticalAlign="bottom"
-                          height={36}
-                          iconType="circle"
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ReusablePieChart
+                      data={returnData.releasedPieData}
+                      dataKey="count"
+                      nameKey="answer"
+                      colorKey="fill"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      labelLine={false}
+                      stroke="#fff"
+                      strokeWidth={1}
+                      showLegend
+                      showPercentage={false}
+                      height="100%"
+                    />
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-gray-400">
                       <AlertCircle className="w-10 h-10 mb-2 opacity-20" />
@@ -308,38 +290,21 @@ export default function ReturnIntent() {
               <CardContent className="flex-1 min-h-87.5">
                 <div className="h-87.5 w-full" ref={chartRef2}>
                   {returnData.soldierPieData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart
-                        margin={{ top: 20, right: 40, left: 40, bottom: 20 }}
-                      >
-                        <Pie
-                          data={returnData.soldierPieData}
-                          cx="50%"
-                          cy="45%"
-                          innerRadius={60}
-                          outerRadius={100}
-                          paddingAngle={2}
-                          dataKey="count"
-                          nameKey="answer"
-                          labelLine={false}
-                          label={(props) => (
-                            <SimplePieLabel
-                              {...props}
-                              outerRadius={props.outerRadius + 20}
-                              fontSize={14}
-                              fontWeight="bold"
-                            />
-                          )}
-                          strokeWidth={1}
-                          stroke="#fff"
-                        />
-                        <Legend
-                          verticalAlign="bottom"
-                          height={36}
-                          iconType="circle"
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
+                    <ReusablePieChart
+                      data={returnData.soldierPieData}
+                      dataKey="count"
+                      nameKey="answer"
+                      colorKey="fill"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      labelLine={false}
+                      stroke="#fff"
+                      strokeWidth={1}
+                      showLegend
+                      showPercentage={false}
+                      height="100%"
+                    />
                   ) : (
                     <div className="h-full flex flex-col items-center justify-center text-gray-400">
                       <AlertCircle className="w-10 h-10 mb-2 opacity-20" />
