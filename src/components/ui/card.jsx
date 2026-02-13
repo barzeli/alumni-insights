@@ -10,7 +10,6 @@ const Card = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-Card.displayName = "Card";
 
 const CardHeader = ({ className, ref, ...props }) => (
   <div
@@ -19,7 +18,6 @@ const CardHeader = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-CardHeader.displayName = "CardHeader";
 
 const CardTitle = ({ className, ref, ...props }) => (
   <h3
@@ -28,11 +26,9 @@ const CardTitle = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-CardTitle.displayName = "CardTitle";
 
 const CardContent = ({ className, ref, ...props }) => (
   <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 );
-CardContent.displayName = "CardContent";
 
 export { Card, CardHeader, CardTitle, CardContent };

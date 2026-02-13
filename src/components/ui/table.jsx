@@ -9,12 +9,10 @@ const Table = ({ className, ref, ...props }) => (
     />
   </div>
 );
-Table.displayName = "Table";
 
 const TableHeader = ({ className, ref, ...props }) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 );
-TableHeader.displayName = "TableHeader";
 
 const TableBody = ({ className, ref, ...props }) => (
   <tbody
@@ -23,7 +21,6 @@ const TableBody = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-TableBody.displayName = "TableBody";
 
 const TableRow = ({ className, ref, ...props }) => (
   <tr
@@ -35,30 +32,27 @@ const TableRow = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-TableRow.displayName = "TableRow";
 
 const TableHead = ({ className, ref, ...props }) => (
   <th
     ref={ref}
     className={cn(
-      "h-10 px-2 text-right align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "h-10 px-2 text-right align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5",
       className,
     )}
     {...props}
   />
 );
-TableHead.displayName = "TableHead";
 
 const TableCell = ({ className, ref, ...props }) => (
   <td
     ref={ref}
     className={cn(
-      "p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+      "p-2 align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5",
       className,
     )}
     {...props}
   />
 );
-TableCell.displayName = "TableCell";
 
 export { Table, TableHeader, TableBody, TableHead, TableRow, TableCell };

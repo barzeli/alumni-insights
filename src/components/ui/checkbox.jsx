@@ -17,6 +17,5 @@ const Checkbox = ({ className, ref, ...props }) => (
     </Indicator>
   </Root>
 );
-Checkbox.displayName = Root.displayName;
 
 export { Checkbox };

@@ -25,16 +25,6 @@ const Alert = ({ className, variant, ref, ...props }) => (
     {...props}
   />
 );
-Alert.displayName = "Alert";
-
-const AlertTitle = ({ className, ref, ...props }) => (
-  <h5
-    ref={ref}
-    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
-    {...props}
-  />
-);
-AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = ({ className, ref, ...props }) => (
   <div
@@ -43,6 +33,5 @@ const AlertDescription = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-AlertDescription.displayName = "AlertDescription";
 
 export { Alert, AlertDescription };

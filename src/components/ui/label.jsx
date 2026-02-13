@@ -10,6 +10,5 @@ const labelVariants = cva(
 const Label = ({ className, ref, ...props }) => (
   <Root ref={ref} className={cn(labelVariants(), className)} {...props} />
 );
-Label.displayName = Root.displayName;
 
 export { Label };

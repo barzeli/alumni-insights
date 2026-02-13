@@ -28,7 +28,6 @@ const DialogOverlay = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-DialogOverlay.displayName = Overlay.displayName;
 
 const DialogContent = ({ className, children, ref, ...props }) => (
   <DialogPortal>
@@ -49,7 +48,6 @@ const DialogContent = ({ className, children, ref, ...props }) => (
     </Content>
   </DialogPortal>
 );
-DialogContent.displayName = Content.displayName;
 
 const DialogHeader = ({ className, ...props }) => (
   <div
@@ -60,7 +58,6 @@ const DialogHeader = ({ className, ...props }) => (
     {...props}
   />
 );
-DialogHeader.displayName = "DialogHeader";
 
 const DialogTitle = ({ className, ref, ...props }) => (
   <Title
@@ -72,7 +69,6 @@ const DialogTitle = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-DialogTitle.displayName = Title.displayName;
 
 const DialogDescription = ({ className, ref, ...props }) => (
   <Description
@@ -81,7 +77,6 @@ const DialogDescription = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-DialogDescription.displayName = Description.displayName;
 
 export {
   Dialog,

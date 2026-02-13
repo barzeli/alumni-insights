@@ -26,6 +26,5 @@ const PopoverContent = ({
     />
   </Portal>
 );
-PopoverContent.displayName = Content.displayName;
 
 export { Popover, PopoverTrigger, PopoverContent };

@@ -34,7 +34,6 @@ const SelectTrigger = ({ className, children, ref, ...props }) => (
     </Icon>
   </Trigger>
 );
-SelectTrigger.displayName = Trigger.displayName;
 
 const SelectScrollUpButton = ({ className, ref, ...props }) => (
   <ScrollUpButton
@@ -48,7 +47,6 @@ const SelectScrollUpButton = ({ className, ref, ...props }) => (
     <ChevronUp className="h-4 w-4" />
   </ScrollUpButton>
 );
-SelectScrollUpButton.displayName = ScrollUpButton.displayName;
 
 const SelectScrollDownButton = ({ className, ref, ...props }) => (
   <ScrollDownButton
@@ -62,7 +60,6 @@ const SelectScrollDownButton = ({ className, ref, ...props }) => (
     <ChevronDown className="h-4 w-4" />
   </ScrollDownButton>
 );
-SelectScrollDownButton.displayName = ScrollDownButton.displayName;
 
 const SelectContent = ({
   className,
@@ -97,7 +94,6 @@ const SelectContent = ({
     </Content>
   </Portal>
 );
-SelectContent.displayName = Content.displayName;
 
 const SelectItem = ({ className, children, ref, ...props }) => (
   <Item
@@ -116,6 +112,5 @@ const SelectItem = ({ className, children, ref, ...props }) => (
     <ItemText>{children}</ItemText>
   </Item>
 );
-SelectItem.displayName = Item.displayName;
 
 export { Select, SelectValue, SelectTrigger, SelectContent, SelectItem };

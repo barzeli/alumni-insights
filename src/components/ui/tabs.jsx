@@ -1,5 +1,4 @@
 import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
-
 import { cn } from "../../utils/className";
 
 const Tabs = Root;
@@ -14,7 +13,6 @@ const TabsList = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-TabsList.displayName = List.displayName;
 
 const TabsTrigger = ({ className, ref, ...props }) => (
   <Trigger
@@ -26,7 +24,6 @@ const TabsTrigger = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-TabsTrigger.displayName = Trigger.displayName;
 
 const TabsContent = ({ className, ref, ...props }) => (
   <Content
@@ -38,6 +35,5 @@ const TabsContent = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-TabsContent.displayName = Content.displayName;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

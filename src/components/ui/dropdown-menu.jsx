@@ -27,7 +27,6 @@ const DropdownMenuContent = ({ className, sideOffset = 4, ref, ...props }) => (
     />
   </Portal>
 );
-DropdownMenuContent.displayName = Content.displayName;
 
 const DropdownMenuItem = ({ className, inset, ref, ...props }) => (
   <Item
@@ -40,7 +39,6 @@ const DropdownMenuItem = ({ className, inset, ref, ...props }) => (
     {...props}
   />
 );
-DropdownMenuItem.displayName = Item.displayName;
 
 const DropdownMenuLabel = ({ className, inset, ref, ...props }) => (
   <Label
@@ -53,7 +51,6 @@ const DropdownMenuLabel = ({ className, inset, ref, ...props }) => (
     {...props}
   />
 );
-DropdownMenuLabel.displayName = Label.displayName;
 
 const DropdownMenuSeparator = ({ className, ref, ...props }) => (
   <Separator
@@ -62,7 +59,6 @@ const DropdownMenuSeparator = ({ className, ref, ...props }) => (
     {...props}
   />
 );
-DropdownMenuSeparator.displayName = Separator.displayName;
 
 export {
   DropdownMenu,
