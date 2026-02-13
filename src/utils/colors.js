@@ -6,7 +6,7 @@ const COHORT_COLORS = {
   "מחזור ד": "#7c3aed", // Purple
   "מחזור ה": "#ea580c", // Orange
   "מחזור ו": "#0891b2", // Cyan
-  "נתיבי א": "#db2777", // Pink
+  "נתיבי מחזור א": "#db2777", // Pink
 };
 
 // Very distinct colors for better visual separation
@@ -56,7 +56,7 @@ const COHORT_BAR_COLORS = {
   "מחזור ד": { main: "#7c3aed", light: "#c4b5fd" },
   "מחזור ה": { main: "#ea580c", light: "#fdba74" },
   "מחזור ו": { main: "#0891b2", light: "#67e8f9" },
-  "נתיבי א": { main: "#db2777", light: "#f9a8d4" },
+  "נתיבי מחזור א": { main: "#db2777", light: "#f9a8d4" },
 };
 
 export function getCohortColor(cohortName) {

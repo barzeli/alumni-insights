@@ -136,6 +136,7 @@ export const useOverviewData = () => {
         return {
           name: cohort,
           respondents: respondentsCount,
+          nonRespondents: Math.max(0, total - respondentsCount),
           total,
           percentage: parseFloat(percentage),
           respondentsList,

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,7 +11,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Rectangle,
   Tooltip,
@@ -20,7 +18,6 @@ import {
 import StatCard from "../components/common/StatCard";
 import GlobalFilters from "../components/common/GlobalFilters";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
-import ChartTooltip from "../components/charts/ChartTooltip";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
 import { getCohortBarColors } from "../utils/colors";
 import { useOverviewData } from "../hooks/useOverviewData";
@@ -37,8 +34,6 @@ export default function Overview() {
     setFilters,
     stats,
   } = useOverviewData();
-
-  const [selectedBarData, setSelectedBarData] = useState(null);
 
   return (
     <div className="space-y-6">
@@ -110,69 +105,61 @@ export default function Overview() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-lg text-[#1e3a5f]">
-                מספר עונים ואחוז מענה לפי מחזור
+                מענה לסקר לפי מחזור
               </CardTitle>
               <ChartInfoButton
-                title="עונים ואחוז מענה לפי מחזור"
-                description="כל מחזור מקבל עמודה כפולה: מספר העונים על הסקר ואחוז מענה מתוך כלל המחזור"
+                title="מענה לסקר לפי מחזור"
+                description="כל עמודה מציגה את מספר הבוגרים הכולל במחזור. החלק הכהה מייצג את מי שענו על הסקר, והחלק הבהיר את מי שלא ענו"
                 dataSource="עמודה E - איזה מחזור ושלוחה היית?"
-                calculation="אחוז מענה = מספר עונים / סה״כ בוגרים במחזור (מהמידע השמור)"
+                calculation="אחוז מענה = מספר עונים / סה״כ בוגרים במחזור"
               />
             </CardHeader>
             <CardContent>
-              <div className="h-87.5">
+              <div className="h-125">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={stats.cohortData}
-                    margin={{ bottom: 120, left: 10, right: 10 }}
+                    margin={{ bottom: 120, left: 10, right: 10, top: 30 }}
                     barCategoryGap="20%"
-                    barGap={2}
                   >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip
                       cursor={{ fill: "transparent" }}
-                      content={() => (
-                        <ChartTooltip
-                          onClose={() => setSelectedBarData(null)}
-                        />
-                      )}
-                    />
-                    <Legend
-                      verticalAlign="top"
-                      align="center"
-                      height={50}
-                      formatter={(value) =>
-                        value === "respondents"
-                          ? "מספר עונים (כהה)"
-                          : value === "percentage"
-                            ? "אחוז מענה (בהיר)"
-                            : value
-                      }
+                      content={({ payload }) => {
+                        if (!payload || payload.length === 0) return null;
+                        const data = payload[0]?.payload;
+                        if (!data) return null;
+                        return (
+                          <div className="bg-white border rounded-lg shadow-lg p-3 text-sm">
+                            <p className="font-bold text-[#1e3a5f] mb-1">
+                              {data.name}
+                            </p>
+                            <p>
+                              עונים: <strong>{data.respondents}</strong> מתוך{" "}
+                              {data.total}
+                            </p>
+                            <p>
+                              אחוז מענה: <strong>{data.percentage}%</strong>
+                            </p>
+                          </div>
+                        );
+                      }}
                     />
                     <Bar
-                      yAxisId="left"
                       dataKey="respondents"
                       name="respondents"
-                      onClick={(data) =>
-                        data && setSelectedBarData(data.payload)
-                      }
-                      cursor="pointer"
+                      stackId="a"
                       shape={(props) => (
                         <Rectangle
                           {...props}
                           fill={getCohortBarColors(props.payload.name).main}
-                          radius={[4, 4, 0, 0]}
                         />
                       )}
                     />
                     <Bar
-                      yAxisId="right"
-                      dataKey="percentage"
-                      name="percentage"
-                      onClick={(data) =>
-                        data && setSelectedBarData(data.payload)
-                      }
-                      cursor="pointer"
+                      dataKey="nonRespondents"
+                      name="nonRespondents"
+                      stackId="a"
                       shape={(props) => (
                         <Rectangle
                           {...props}
@@ -180,10 +167,25 @@ export default function Overview() {
                           radius={[4, 4, 0, 0]}
                         />
                       )}
+                      label={(props) => {
+                        const data = stats.cohortData[props.index];
+                        if (!data) return null;
+                        return (
+                          <text
+                            x={props.x + props.width / 2}
+                            y={props.y - 8}
+                            textAnchor="middle"
+                            fontSize={10}
+                            fontWeight="bold"
+                            fill="#374151"
+                          >
+                            {data.percentage}%
+                          </text>
+                        );
+                      }}
                     />
                     <XAxis
                       dataKey="name"
-                      angle={-45}
                       textAnchor="end"
                       height={120}
                       interval={0}
@@ -191,39 +193,16 @@ export default function Overview() {
                       tickMargin={10}
                     />
                     <YAxis
-                      yAxisId="left"
-                      orientation="right"
                       allowDecimals={false}
                       label={{
-                        value: "מספר עונים",
+                        value: "מספר בוגרים",
                         angle: 90,
-                        position: "insideRight",
+                        position: "outside",
                         style: { fontSize: 11, fill: "#1e3a5f" },
-                      }}
-                    />
-                    <YAxis
-                      yAxisId="right"
-                      orientation="left"
-                      allowDecimals={false}
-                      domain={[0, 100]}
-                      label={{
-                        value: "אחוז מענה",
-                        angle: -90,
-                        position: "insideLeft",
-                        style: { fontSize: 11, fill: "#0891b2" },
                       }}
                     />
                   </BarChart>
                 </ResponsiveContainer>
-                {selectedBarData && (
-                  <ChartTooltip
-                    payload={selectedBarData}
-                    onClose={() => setSelectedBarData(null)}
-                    nameKey="name"
-                    valueLabel="עונים"
-                    filterKey="cohort"
-                  />
-                )}
               </div>
             </CardContent>
           </Card>
