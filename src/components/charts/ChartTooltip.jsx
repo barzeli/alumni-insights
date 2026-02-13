@@ -11,7 +11,6 @@ export default function ChartTooltip({
   showPercentage = false,
   totalForPercentage = 0,
   filterKey = null,
-  filterValue = null,
 }) {
   if (!payload) return null;
 
@@ -36,12 +35,11 @@ export default function ChartTooltip({
     e.stopPropagation();
     const params = new URLSearchParams();
 
-    const valueToFilter = filterValue || displayName;
     const keyToFilter = filterKey || nameKey;
 
-    if (valueToFilter && keyToFilter) {
+    if (displayName && keyToFilter) {
       params.set("filter_key", keyToFilter);
-      params.set("filter_value", valueToFilter);
+      params.set("filter_value", displayName);
     }
 
     // שמירת רשימת השמות בלוקל סטורג' במקום ב-URL כדי למנוע בעיות אורך

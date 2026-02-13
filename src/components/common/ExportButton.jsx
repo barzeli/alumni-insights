@@ -161,117 +161,6 @@ async function exportChartAsImage(
   });
 }
 
-// Export table as image
-async function exportTableAsImage(tableRef, filename, title = "") {
-  if (!tableRef?.current) return;
-
-  const table = tableRef.current.querySelector("table");
-  if (!table) return;
-
-  // Create a canvas with the table content
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  // Get table dimensions
-  const rows = table.querySelectorAll("tr");
-  const headerRow = rows[0];
-  const headerCells = headerRow?.querySelectorAll("th, td") || [];
-
-  // Calculate dimensions
-  const cellPadding = 16;
-  const rowHeight = 40;
-  const titleHeight = title ? 50 : 0;
-  const totalRows = rows.length;
-
-  // Calculate column widths based on content
-  const colWidths = [];
-  headerCells.forEach((cell, i) => {
-    let maxWidth =
-      ctx.measureText(cell.textContent || "").width + cellPadding * 2;
-    rows.forEach((row) => {
-      const cells = row.querySelectorAll("th, td");
-      if (cells[i]) {
-        const textWidth =
-          ctx.measureText(cells[i].textContent || "").width + cellPadding * 2;
-        maxWidth = Math.max(maxWidth, textWidth);
-      }
-    });
-    colWidths.push(Math.max(maxWidth, 80)); // Minimum 80px
-  });
-
-  const totalWidth = colWidths.reduce((a, b) => a + b, 0) + 40; // Add padding
-  const totalHeight = totalRows * rowHeight + titleHeight + 40;
-
-  const scale = 2;
-  canvas.width = totalWidth * scale;
-  canvas.height = totalHeight * scale;
-  ctx.scale(scale, scale);
-
-  // Background
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, totalWidth, totalHeight);
-
-  // Title
-  if (title) {
-    ctx.fillStyle = "#1e3a5f";
-    ctx.font = "bold 18px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(title, totalWidth / 2, 30);
-  }
-
-  let y = titleHeight + 20;
-
-  // Draw table
-  rows.forEach((row, rowIndex) => {
-    const cells = row.querySelectorAll("th, td");
-    const isHeader = rowIndex === 0;
-
-    let x = 20;
-    cells.forEach((cell, colIndex) => {
-      // Cell background
-      if (isHeader) {
-        ctx.fillStyle = "#f3f4f6";
-      } else {
-        ctx.fillStyle = rowIndex % 2 === 0 ? "white" : "#f9fafb";
-      }
-      ctx.fillRect(x, y, colWidths[colIndex], rowHeight);
-
-      // Cell border
-      ctx.strokeStyle = "#e5e7eb";
-      ctx.strokeRect(x, y, colWidths[colIndex], rowHeight);
-
-      // Cell text
-      ctx.fillStyle = "#374151";
-      ctx.font = isHeader ? "bold 13px Arial" : "13px Arial";
-      ctx.textAlign = "right";
-      ctx.fillText(
-        cell.textContent || "",
-        x + colWidths[colIndex] - cellPadding,
-        y + rowHeight / 2 + 5,
-      );
-
-      x += colWidths[colIndex];
-    });
-
-    y += rowHeight;
-  });
-
-  // Download
-  canvas.toBlob((blob) => {
-    if (blob) {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${filename}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-  }, "image/png");
-}
-
 // Export button for charts
 export function ChartExportButton({
   chartRef,
@@ -332,13 +221,7 @@ export function ChartExportButton({
 }
 
 // Export button for tables
-export function TableExportButton({
-  data,
-  columns,
-  filename = "table",
-  tableRef = null,
-  title = "",
-}) {
+export function TableExportButton({ data, columns, filename = "table" }) {
   const handleExportCSV = () => {
     const csv = dataToCSV(data, columns);
     downloadFile(csv, `${filename}.csv`, "text/csv;charset=utf-8");
@@ -347,12 +230,6 @@ export function TableExportButton({
   const handleExportJSON = () => {
     const json = JSON.stringify(data, null, 2);
     downloadFile(json, `${filename}.json`, "application/json");
-  };
-
-  const handleExportPNG = () => {
-    if (tableRef) {
-      exportTableAsImage(tableRef, filename, title);
-    }
   };
 
   return (
@@ -365,12 +242,7 @@ export function TableExportButton({
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>ייצוא טבלה</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {tableRef && (
-          <DropdownMenuItem onClick={handleExportPNG}>
-            <Image className="h-4 w-4 ml-2" />
-            תמונה (PNG)
-          </DropdownMenuItem>
-        )}
+
         <DropdownMenuItem onClick={handleExportCSV}>
           <FileSpreadsheet className="h-4 w-4 ml-2" />
           אקסל (CSV)

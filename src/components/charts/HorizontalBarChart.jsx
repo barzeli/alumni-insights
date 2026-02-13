@@ -64,7 +64,6 @@ const HorizontalBarChart = ({
   valueKey = "count",
   height = 300,
   colorOffset = 0,
-  barSize = 25,
   valueLabel = "מספר",
   useCohortColors = false,
   singleColor = null,
@@ -119,7 +118,7 @@ const HorizontalBarChart = ({
           <Bar
             dataKey={valueKey}
             radius={[0, 4, 4, 0]}
-            barSize={barSize}
+            barSize={25}
             onClick={handleBarClick}
             cursor="pointer"
           >

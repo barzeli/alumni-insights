@@ -28,24 +28,24 @@ const DropdownMenuContent = ({ className, sideOffset = 4, ref, ...props }) => (
   </Portal>
 );
 
-const DropdownMenuItem = ({ className, inset, ref, ...props }) => (
+const DropdownMenuItem = ({ className, ref, ...props }) => (
   <Item
     ref={ref}
     className={cn(
       "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0",
-      inset && "pr-8",
+
       className,
     )}
     {...props}
   />
 );
 
-const DropdownMenuLabel = ({ className, inset, ref, ...props }) => (
+const DropdownMenuLabel = ({ className, ref, ...props }) => (
   <Label
     ref={ref}
     className={cn(
       "px-2 py-1.5 text-sm font-semibold",
-      inset && "pr-8",
+
       className,
     )}
     {...props}

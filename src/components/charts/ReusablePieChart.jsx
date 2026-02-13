@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import ChartTooltip from "./ChartTooltip";
 
 // Simple Pie Label
@@ -48,10 +48,8 @@ export default function ReusablePieChart({
   outerRadius = 80,
   innerRadius = 40,
   paddingAngle = 5,
-  showLabels = true,
   labelFontSize = 14,
   labelFontWeight = "bold",
-  showLegend = false,
   valueLabel = "כמות",
   showPercentage = true,
   totalForPercentage = null,
@@ -97,21 +95,17 @@ export default function ReusablePieChart({
             data={data}
             cx="50%"
             cy="50%"
-            labelLine={showLabels}
-            label={
-              showLabels
-                ? (props) => (
-                    <SimplePieLabel
-                      {...props}
-                      outerRadius={props.outerRadius + 40}
-                      name={props[nameKey] || props.name}
-                      value={props[dataKey] || props.value}
-                      fontSize={labelFontSize}
-                      fontWeight={labelFontWeight}
-                    />
-                  )
-                : false
-            }
+            labelLine
+            label={(props) => (
+              <SimplePieLabel
+                {...props}
+                outerRadius={props.outerRadius + 40}
+                name={props[nameKey] || props.name}
+                value={props[dataKey] || props.value}
+                fontSize={labelFontSize}
+                fontWeight={labelFontWeight}
+              />
+            )}
             outerRadius={outerRadius}
             innerRadius={innerRadius}
             fill="#8884d8"
@@ -133,7 +127,6 @@ export default function ReusablePieChart({
               />
             ))}
           </Pie>
-          {showLegend && <Legend />}
         </PieChart>
       </ResponsiveContainer>
 
