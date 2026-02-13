@@ -1,4 +1,4 @@
-import * as LabelPrimitive from "@radix-ui/react-label";
+import { Root } from "@radix-ui/react-label";
 import { cva } from "class-variance-authority";
 
 import { cn } from "../../utils/className";
@@ -8,12 +8,8 @@ const labelVariants = cva(
 );
 
 const Label = ({ className, ref, ...props }) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(labelVariants(), className)}
-    {...props}
-  />
+  <Root ref={ref} className={cn(labelVariants(), className)} {...props} />
 );
-Label.displayName = LabelPrimitive.Root.displayName;
+Label.displayName = Root.displayName;
 
 export { Label };

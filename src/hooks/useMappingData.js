@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 // *** מיפוי מלא מתוך הקובץ המצורף ***
 // מערך גולמי עם אפשרות לכפילויות
-export const RAW_MAPPING_DATA = [
+const RAW_MAPPING_DATA = [
   {
     field: "timestamp",
     index: 0,

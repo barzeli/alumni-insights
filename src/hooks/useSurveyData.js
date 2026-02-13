@@ -209,11 +209,11 @@ export function parseSurveyCSV(text, columnMapping = DEFAULT_COLUMN_MAPPING) {
 }
 
 // פונקציות עזר לבוגרים
-export function getGraduatesData() {
+function getGraduatesData() {
   return JSON.parse(localStorage.getItem("graduatesData") || "[]");
 }
 
-export function calculateTotalCohorts() {
+function calculateTotalCohorts() {
   const uniqueOfakimCohorts = new Set(
     getGraduatesData()
       .map((g) => g.cohort)
@@ -222,7 +222,7 @@ export function calculateTotalCohorts() {
   return uniqueOfakimCohorts.size;
 }
 
-export function calculateCohortCounts() {
+function calculateCohortCounts() {
   const counts = {};
   getGraduatesData().forEach((g) => {
     if (g.cohort) {

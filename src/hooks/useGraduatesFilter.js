@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSurveyData } from "./useSurveyData";
 
 // Survey field options for filtering
-export const SURVEY_FILTER_OPTIONS = {
+const SURVEY_FILTER_OPTIONS = {
   military_status: {
     label: "שלב בחיים",
     options: [
