@@ -52,7 +52,6 @@ export default function ReusablePieChart({
   labelFontWeight = "bold",
   valueLabel = "כמות",
   showPercentage = true,
-  totalForPercentage = null,
   filterKey = null,
   showLegend = false,
   stroke,
@@ -60,9 +59,7 @@ export default function ReusablePieChart({
   labelLine = true,
 }) {
   const [selectedData, setSelectedData] = useState(null);
-  const total =
-    totalForPercentage ||
-    data.reduce((sum, item) => sum + (item[dataKey] || 0), 0);
+  const total = data.reduce((sum, item) => sum + (item[dataKey] || 0), 0);
 
   const defaultColors = [
     "#1e3a5f",

@@ -14,8 +14,8 @@ import ChartTooltip from "./ChartTooltip";
 import { getCohortColor } from "../../utils/colors";
 
 // פונקציית צבעים ברירת מחדל
-const getDynamicColor = (index, offset = 0) => {
-  const hue = ((index + offset) * 137.5) % 360;
+const getDynamicColor = (index) => {
+  const hue = (index * 137.5) % 360;
   return `hsl(${hue}, 65%, 45%)`;
 };
 
@@ -65,17 +65,13 @@ const ReusableBarChart = ({
   dataKey,
   valueKey = "count",
   height = 300,
-  colorOffset = 0,
   valueLabel = "מספר",
   useCohortColors = false,
   singleColor = null,
   showPercentage = false,
-  totalForPercentage = 0,
   filterKey = null,
   stacks = null,
   horizontal = true,
-  margin,
-  categoryAxisWidth = 150,
 }) => {
   const [selectedData, setSelectedData] = useState(null);
 
@@ -100,7 +96,7 @@ const ReusableBarChart = ({
     if (entry.role === "עתודאי" || entry[dataKey] === "עתודאי") {
       return "#8b5cf6";
     }
-    return getDynamicColor(index, colorOffset);
+    return getDynamicColor(index);
   };
 
   const handleBarClick = (data) => {
@@ -109,18 +105,10 @@ const ReusableBarChart = ({
     }
   };
 
-  const defaultMargin = horizontal
-    ? { top: 10, right: 30, left: 100, bottom: 10 }
-    : { top: 10, right: 30, left: 10, bottom: 10 };
-
   return (
     <div style={{ height, width: "100%" }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          layout={horizontal ? "vertical" : undefined}
-          margin={margin || defaultMargin}
-        >
+        <BarChart data={data} layout={horizontal ? "vertical" : "horizontal"}>
           <CartesianGrid strokeDasharray="3 3" />
 
           {isStacked ? (
@@ -159,7 +147,7 @@ const ReusableBarChart = ({
               <YAxis
                 type="category"
                 dataKey={dataKey}
-                width={isStacked ? categoryAxisWidth : 180}
+                width={isStacked ? 150 : 180}
                 tick={isStacked ? undefined : <CustomYAxisTick />}
                 tickMargin={isStacked ? 10 : 20}
                 interval={0}
@@ -185,7 +173,6 @@ const ReusableBarChart = ({
           valueLabel={valueLabel}
           filterKey={filterKey || dataKey}
           showPercentage={showPercentage}
-          totalForPercentage={totalForPercentage}
         />
       )}
     </div>

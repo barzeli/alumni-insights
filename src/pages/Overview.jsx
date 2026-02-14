@@ -276,7 +276,6 @@ export default function Overview() {
                   labelFontWeight="bold"
                   valueLabel="מספר"
                   showPercentage={true}
-                  totalForPercentage={stats.totalRespondents}
                   filterKey="military_status"
                 />
               </CardContent>

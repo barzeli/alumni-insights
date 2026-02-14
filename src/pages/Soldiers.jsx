@@ -386,7 +386,6 @@ export default function Soldiers() {
                       300,
                       soldierData.commandersData.length * 60,
                     )}
-                    margin={{ top: 10, right: 30, left: 120, bottom: 10 }}
                   />
                 ) : (
                   <div className="h-50 flex items-center justify-center text-gray-500">
@@ -458,7 +457,6 @@ export default function Soldiers() {
                       data={soldierData.enlistmentData}
                       dataKey="period"
                       valueLabel="מספר מתגייסים"
-                      colorOffset={4}
                       height={Math.max(
                         200,
                         soldierData.enlistmentData.length * 40,
@@ -505,7 +503,6 @@ export default function Soldiers() {
                       data={soldierData.releaseData}
                       dataKey="period"
                       valueLabel="מספר משתחררים"
-                      colorOffset={8}
                       height={Math.max(
                         200,
                         soldierData.releaseData.length * 40,
