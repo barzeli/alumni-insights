@@ -9,14 +9,8 @@ export default function ReusablePieChart({
   colorKey = "color",
   colors = null,
   height = 400,
-  outerRadius = 80,
-  innerRadius = 40,
-  paddingAngle = 5,
   valueLabel = "כמות",
-  showPercentage = true,
   filterKey = null,
-  stroke,
-  strokeWidth = 2,
 }) {
   const [selectedData, setSelectedData] = useState(null);
   const total = data.reduce((sum, item) => sum + (item[dataKey] || 0), 0);
@@ -69,15 +63,13 @@ export default function ReusablePieChart({
             label={(props) =>
               `${props[nameKey] || props.name} (${props[dataKey] || props.value})`
             }
-            outerRadius={outerRadius}
-            innerRadius={innerRadius}
+            outerRadius={80}
+            innerRadius={40}
             fill="#8884d8"
             dataKey={dataKey}
-            paddingAngle={paddingAngle}
+            paddingAngle={2}
             onClick={handlePieClick}
             cursor="pointer"
-            strokeWidth={strokeWidth}
-            stroke={stroke}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -89,7 +81,7 @@ export default function ReusablePieChart({
           nameKey={nameKey}
           valueLabel={valueLabel}
           filterKey={filterKey}
-          showPercentage={showPercentage}
+          showPercentage={true}
           totalForPercentage={total}
         />
       )}

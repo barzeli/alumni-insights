@@ -249,12 +249,6 @@ export default function ReturnIntent() {
                       dataKey="count"
                       nameKey="answer"
                       colorKey="fill"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={2}
-                      stroke="#fff"
-                      strokeWidth={1}
-                      showPercentage={false}
                       height="100%"
                     />
                   ) : (
@@ -293,12 +287,6 @@ export default function ReturnIntent() {
                       dataKey="count"
                       nameKey="answer"
                       colorKey="fill"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={2}
-                      stroke="#fff"
-                      strokeWidth={1}
-                      showPercentage={false}
                       height="100%"
                     />
                   ) : (

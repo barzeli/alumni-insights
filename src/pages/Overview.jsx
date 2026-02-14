@@ -270,10 +270,7 @@ export default function Overview() {
                   nameKey="name"
                   colorKey="color"
                   height={400}
-                  outerRadius={80}
-                  innerRadius={40}
                   valueLabel="מספר"
-                  showPercentage={true}
                   filterKey="military_status"
                 />
               </CardContent>

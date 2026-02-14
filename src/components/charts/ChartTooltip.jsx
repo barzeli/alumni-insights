@@ -58,6 +58,7 @@ export default function ChartTooltip({
 
   return (
     <div
+      style={{ direction: "rtl" }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
       onClick={onClose}
     >

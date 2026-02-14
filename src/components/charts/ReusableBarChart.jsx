@@ -27,7 +27,6 @@ const ReusableBarChart = ({
   valueLabel = "מספר",
   useCohortColors = false,
   singleColor = null,
-  showPercentage = false,
   filterKey = null,
   stacks = null,
   horizontal = true,
@@ -127,7 +126,7 @@ const ReusableBarChart = ({
           nameKey={dataKey}
           valueLabel={valueLabel}
           filterKey={filterKey || dataKey}
-          showPercentage={showPercentage}
+          showPercentage={false}
         />
       )}
     </div>
