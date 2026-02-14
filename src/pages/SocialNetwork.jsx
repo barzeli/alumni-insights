@@ -19,7 +19,7 @@ import { useSurveyData } from "../hooks/useSurveyData";
 
 import { getValue, getName } from "../utils/surveyDataHelpers";
 import { getCohortBarColors } from "../utils/colors";
-import StackedBarChart from "../components/charts/StackedBarChart";
+import HorizontalBarChart from "../components/charts/HorizontalBarChart";
 import NetworkGraph from "../components/network/NetworkGraph";
 import ConnectionMatrix from "../components/network/ConnectionMatrix";
 import Heatmap from "../components/network/Heatmap";
@@ -79,6 +79,11 @@ function buildGraph(rows, graduatesData, getNameFn, getValueFn) {
   rows.forEach((row) => {
     const source = normalizeText(getNameFn(row));
     if (!source || source === "לא ידוע") return;
+
+    const cohort = getValueFn(row, "cohort") || "";
+    const pronoun = getValueFn(row, "pronoun") || "";
+    const familyStatus = getValueFn(row, "family_status") || "";
+    ensureNode(source, cohort, pronoun, familyStatus);
 
     for (let idx = 94; idx <= 103; idx++) {
       const cell = getValueFn(row, `connection_${idx - 93}`);
@@ -376,9 +381,9 @@ function FamilyStatusByCohort({ data }) {
         <CardTitle className="text-lg">מצב משפחתי לפי מחזור</CardTitle>
       </CardHeader>
       <CardContent>
-        <StackedBarChart
+        <HorizontalBarChart
           data={chartData.chartData}
-          categoryKey="cohort"
+          dataKey="cohort"
           stacks={chartData.statuses.map((status, index) => ({
             dataKey: status,
             name: status,

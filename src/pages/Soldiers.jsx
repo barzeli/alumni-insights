@@ -29,7 +29,6 @@ import {
 } from "../components/common/ExportButton";
 import HorizontalBarChart from "../components/charts/HorizontalBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
-import StackedBarChart from "../components/charts/StackedBarChart";
 
 export default function Soldiers() {
   const { surveyData, hasSurveyData } = useSurveyData();
@@ -370,9 +369,9 @@ export default function Soldiers() {
             <CardContent>
               <div ref={chartRef5}>
                 {soldierData.commandersData.length > 0 ? (
-                  <StackedBarChart
+                  <HorizontalBarChart
                     data={soldierData.commandersData}
-                    categoryKey="cohort"
+                    dataKey="cohort"
                     stacks={[
                       { dataKey: "officer", name: "קצינים", color: "#1e3a5f" },
                       { dataKey: "nco", name: "נגדים", color: "#0891b2" },

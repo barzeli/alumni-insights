@@ -7,6 +7,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Rectangle,
+  Tooltip,
+  Legend,
 } from "recharts";
 import ChartTooltip from "./ChartTooltip";
 import { getCohortColor } from "../../utils/colors";
@@ -70,6 +72,10 @@ const HorizontalBarChart = ({
   showPercentage = false,
   totalForPercentage = 0,
   filterKey = null,
+  stacks = null,
+  horizontal = true,
+  margin,
+  categoryAxisWidth = 150,
 }) => {
   const [selectedData, setSelectedData] = useState(null);
 
@@ -83,6 +89,8 @@ const HorizontalBarChart = ({
       </div>
     );
   }
+
+  const isStacked = !!stacks;
 
   const getBarColor = (entry, index) => {
     if (singleColor) return singleColor;
@@ -101,49 +109,75 @@ const HorizontalBarChart = ({
     }
   };
 
+  const defaultMargin = horizontal
+    ? { top: 10, right: 30, left: 100, bottom: 10 }
+    : { top: 10, right: 30, left: 10, bottom: 10 };
+
   return (
     <div style={{ height, width: "100%" }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
-          layout="vertical"
-          margin={{ top: 10, right: 30, left: 100, bottom: 10 }}
+          layout={horizontal ? "vertical" : undefined}
+          margin={margin || defaultMargin}
         >
-          <CartesianGrid
-            strokeDasharray="3 3"
-            horizontal={true}
-            vertical={false}
-          />
+          <CartesianGrid strokeDasharray="3 3" />
 
-          <Bar
-            dataKey={valueKey}
-            barSize={25}
-            onClick={handleBarClick}
-            cursor="pointer"
-            shape={(props) => (
-              <Rectangle
-                {...props}
-                fill={getBarColor(props.payload, props.index)}
-                radius={[0, 4, 4, 0]}
+          {isStacked ? (
+            <>
+              {stacks.map((stack) => (
+                <Bar
+                  key={stack.dataKey}
+                  dataKey={stack.dataKey}
+                  stackId="a"
+                  name={stack.name || stack.dataKey}
+                  fill={stack.color}
+                />
+              ))}
+              <Tooltip />
+              <Legend />
+            </>
+          ) : (
+            <Bar
+              dataKey={valueKey}
+              barSize={25}
+              onClick={handleBarClick}
+              cursor="pointer"
+              shape={(props) => (
+                <Rectangle
+                  {...props}
+                  fill={getBarColor(props.payload, props.index)}
+                  radius={[0, 4, 4, 0]}
+                />
+              )}
+            />
+          )}
+
+          {horizontal ? (
+            <>
+              <XAxis type="number" allowDecimals={false} />
+              <YAxis
+                type="category"
+                dataKey={dataKey}
+                width={isStacked ? categoryAxisWidth : 180}
+                tick={isStacked ? undefined : <CustomYAxisTick />}
+                tickMargin={isStacked ? 10 : 20}
+                interval={0}
+                axisLine={true}
+                tickLine={true}
+                textAnchor="end"
               />
-            )}
-          />
-
-          <XAxis type="number" allowDecimals={false} />
-          <YAxis
-            type="category"
-            dataKey={dataKey}
-            width={180}
-            tick={<CustomYAxisTick />}
-            tickMargin={20}
-            interval={0}
-            axisLine={true}
-            tickLine={true}
-          />
+            </>
+          ) : (
+            <>
+              <XAxis dataKey={dataKey} />
+              <YAxis />
+            </>
+          )}
         </BarChart>
       </ResponsiveContainer>
 
-      {selectedData && (
+      {!isStacked && selectedData && (
         <ChartTooltip
           payload={selectedData}
           onClose={() => setSelectedData(null)}
