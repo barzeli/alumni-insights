@@ -30,6 +30,8 @@ const ReusableBarChart = ({
   filterKey = null,
   stacks = null,
   horizontal = true,
+  customTooltip = null,
+  showLegend = true,
 }) => {
   const [selectedData, setSelectedData] = useState(null);
 
@@ -64,10 +66,12 @@ const ReusableBarChart = ({
   };
 
   return (
-    <div style={{ height, width: "100%", direction: "ltr" }}>
+    <div
+      style={{ height, width: "100%", direction: horizontal ? "ltr" : "rtl" }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout={horizontal ? "vertical" : "horizontal"}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid strokeDasharray="3 3" vertical={horizontal} />
 
           {isStacked ? (
             <>
@@ -78,10 +82,12 @@ const ReusableBarChart = ({
                   stackId="a"
                   name={stack.name || stack.dataKey}
                   fill={stack.color}
+                  {...(stack.shape ? { shape: stack.shape } : {})}
+                  {...(stack.label ? { label: stack.label } : {})}
                 />
               ))}
-              <Tooltip />
-              <Legend />
+              {customTooltip ? customTooltip : <Tooltip />}
+              {showLegend && <Legend />}
             </>
           ) : (
             <Bar
@@ -106,7 +112,6 @@ const ReusableBarChart = ({
                 type="category"
                 dataKey={dataKey}
                 width={180}
-                tickMargin={10}
                 interval={0}
               />
             </>

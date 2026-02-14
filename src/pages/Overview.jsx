@@ -5,20 +5,12 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Users, UserCheck, Percent, BarChart3 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  Rectangle,
-  Tooltip,
-} from "recharts";
+import { Rectangle, Tooltip } from "recharts";
 import StatCard from "../components/common/StatCard";
 import GlobalFilters from "../components/common/GlobalFilters";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import { getCohortBarColors } from "../utils/colors";
 import { useOverviewData } from "../hooks/useOverviewData";
 import NoDataView from "../components/common/NoDataView";
@@ -115,95 +107,76 @@ export default function Overview() {
               />
             </CardHeader>
             <CardContent>
-              <div className="h-125">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={stats.cohortData}
-                    margin={{ bottom: 120, left: 10, right: 10, top: 30 }}
-                    barCategoryGap="20%"
-                  >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip
-                      cursor={{ fill: "transparent" }}
-                      content={({ payload }) => {
-                        if (!payload || payload.length === 0) return null;
-                        const data = payload[0]?.payload;
-                        if (!data) return null;
-                        return (
-                          <div className="bg-white border rounded-lg shadow-lg p-3 text-sm">
-                            <p className="font-bold text-[#1e3a5f] mb-1">
-                              {data.name}
-                            </p>
-                            <p>
-                              עונים: <strong>{data.respondents}</strong> מתוך{" "}
-                              {data.total}
-                            </p>
-                            <p>
-                              אחוז מענה: <strong>{data.percentage}%</strong>
-                            </p>
-                          </div>
-                        );
-                      }}
-                    />
-                    <Bar
-                      dataKey="respondents"
-                      name="respondents"
-                      stackId="a"
-                      shape={(props) => (
-                        <Rectangle
-                          {...props}
-                          fill={getCohortBarColors(props.payload.name).main}
-                        />
-                      )}
-                    />
-                    <Bar
-                      dataKey="nonRespondents"
-                      name="nonRespondents"
-                      stackId="a"
-                      shape={(props) => (
-                        <Rectangle
-                          {...props}
-                          fill={getCohortBarColors(props.payload.name).light}
-                          radius={[4, 4, 0, 0]}
-                        />
-                      )}
-                      label={(props) => {
-                        const data = stats.cohortData[props.index];
-                        if (!data) return null;
-                        return (
-                          <text
-                            x={props.x + props.width / 2}
-                            y={props.y - 8}
-                            textAnchor="middle"
-                            fontSize={10}
-                            fontWeight="bold"
-                            fill="#374151"
-                          >
-                            {data.percentage}%
-                          </text>
-                        );
-                      }}
-                    />
-                    <XAxis
-                      dataKey="name"
-                      textAnchor="end"
-                      height={120}
-                      interval={0}
-                      tick={{ fontSize: 11, fill: "#374151" }}
-                      tickMargin={10}
-                    />
-                    <YAxis
-                      allowDecimals={false}
-                      label={{
-                        value: "מספר בוגרים",
-                        angle: 90,
-                        position: "outside",
-                        style: { fontSize: 11, fill: "#1e3a5f" },
-                      }}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <ReusableBarChart
+                data={stats.cohortData}
+                dataKey="name"
+                height={500}
+                horizontal={false}
+                showLegend={false}
+                customTooltip={
+                  <Tooltip
+                    cursor={{ fill: "transparent" }}
+                    content={({ payload }) => {
+                      if (!payload || payload.length === 0) return null;
+                      const data = payload[0]?.payload;
+                      if (!data) return null;
+                      return (
+                        <div className="bg-white border rounded-lg shadow-lg p-3 text-sm">
+                          <p className="font-bold text-[#1e3a5f] mb-1">
+                            {data.name}
+                          </p>
+                          <p>
+                            עונים: <strong>{data.respondents}</strong> מתוך{" "}
+                            {data.total}
+                          </p>
+                          <p>
+                            אחוז מענה: <strong>{data.percentage}%</strong>
+                          </p>
+                        </div>
+                      );
+                    }}
+                  />
+                }
+                stacks={[
+                  {
+                    dataKey: "respondents",
+                    name: "respondents",
+                    shape: (props) => (
+                      <Rectangle
+                        {...props}
+                        fill={getCohortBarColors(props.payload.name).main}
+                      />
+                    ),
+                  },
+                  {
+                    dataKey: "nonRespondents",
+                    name: "nonRespondents",
+                    shape: (props) => (
+                      <Rectangle
+                        {...props}
+                        fill={getCohortBarColors(props.payload.name).light}
+                        radius={[4, 4, 0, 0]}
+                      />
+                    ),
+                    label: (props) => {
+                      const data = stats.cohortData[props.index];
+                      if (!data) return null;
+                      return (
+                        <text
+                          x={props.x + props.width / 2}
+                          y={props.y - 8}
+                          textAnchor="middle"
+                          fontSize={10}
+                          fontWeight="bold"
+                          fill="#374151"
+                        >
+                          {data.percentage}%
+                        </text>
+                      );
+                    },
+                  },
+                ]}
+              />
             </CardContent>
           </Card>
 
