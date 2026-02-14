@@ -381,7 +381,6 @@ export default function Soldiers() {
                         color: "#7c3aed",
                       },
                     ]}
-                    horizontal
                     height={Math.max(
                       300,
                       soldierData.commandersData.length * 60,

@@ -19,47 +19,6 @@ const getDynamicColor = (index) => {
   return `hsl(${hue}, 65%, 45%)`;
 };
 
-// --- רכיב חדש: מטפל בשבירת שורות בציר ה-Y ---
-const CustomYAxisTick = ({ x, y, payload }) => {
-  const MAX_CHARS_PER_LINE = 18;
-
-  if (!payload || !payload.value) return null;
-
-  const words = String(payload.value).split(" ");
-  const lines = [];
-  let currentLine = words[0];
-
-  for (let i = 1; i < words.length; i++) {
-    if ((currentLine + " " + words[i]).length <= MAX_CHARS_PER_LINE) {
-      currentLine += " " + words[i];
-    } else {
-      lines.push(currentLine);
-      currentLine = words[i];
-    }
-  }
-  lines.push(currentLine);
-
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={-5}
-        y={0}
-        dy={lines.length === 1 ? 4 : -5}
-        textAnchor="end"
-        fill="#374151"
-        fontSize={11}
-        fontWeight="bold"
-      >
-        {lines.map((line, index) => (
-          <tspan x={0} dy={index === 0 ? 0 : 14} key={index}>
-            {line}
-          </tspan>
-        ))}
-      </text>
-    </g>
-  );
-};
-
 const ReusableBarChart = ({
   data,
   dataKey,
@@ -106,7 +65,7 @@ const ReusableBarChart = ({
   };
 
   return (
-    <div style={{ height, width: "100%" }}>
+    <div style={{ height, width: "100%", direction: "ltr" }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout={horizontal ? "vertical" : "horizontal"}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -147,13 +106,9 @@ const ReusableBarChart = ({
               <YAxis
                 type="category"
                 dataKey={dataKey}
-                width={isStacked ? 150 : 180}
-                tick={isStacked ? undefined : <CustomYAxisTick />}
-                tickMargin={isStacked ? 10 : 20}
+                width={180}
+                tickMargin={10}
                 interval={0}
-                axisLine={true}
-                tickLine={true}
-                textAnchor="end"
               />
             </>
           ) : (

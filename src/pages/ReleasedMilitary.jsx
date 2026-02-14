@@ -310,7 +310,6 @@ export default function ReleasedMilitary() {
                           color: "#7c3aed",
                         },
                       ]}
-                      horizontal
                       height="100%"
                     />
                   ) : (
