@@ -60,7 +60,7 @@ const CustomYAxisTick = ({ x, y, payload }) => {
   );
 };
 
-const HorizontalBarChart = ({
+const ReusableBarChart = ({
   data,
   dataKey,
   valueKey = "count",
@@ -192,4 +192,4 @@ const HorizontalBarChart = ({
   );
 };
 
-export default HorizontalBarChart;
+export default ReusableBarChart;

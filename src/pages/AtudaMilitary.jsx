@@ -25,7 +25,7 @@ import {
   getCohort,
   getStatus,
 } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 
 export default function AtudaMilitary() {
@@ -253,7 +253,7 @@ export default function AtudaMilitary() {
               <CardContent>
                 <div ref={chartRef1}>
                   {militaryData.roleData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.roleData}
                       dataKey="role"
                       valueLabel="מספר עתודאים"
@@ -295,7 +295,7 @@ export default function AtudaMilitary() {
               <CardContent>
                 <div ref={chartRef2}>
                   {militaryData.institutionData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.institutionData}
                       dataKey="institution"
                       valueLabel="מספר עתודאים"
@@ -340,7 +340,7 @@ export default function AtudaMilitary() {
               <CardContent>
                 <div ref={chartRef3}>
                   {militaryData.serviceYearData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.serviceYearData}
                       dataKey="year"
                       valueLabel="מספר עתודאים"

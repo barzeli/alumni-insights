@@ -16,7 +16,7 @@ import {
   PageExportButton,
 } from "../components/common/ExportButton";
 import { getValue, getName, getCohort } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import StudyingSubNav from "../components/layout/StudyingSubNav";
 
@@ -196,7 +196,7 @@ export default function BagrutServiceStudents() {
               <CardContent>
                 <div ref={chartRef1}>
                   {bagrutData.psychometricStatusData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={bagrutData.psychometricStatusData}
                       dataKey="status"
                       valueLabel="מספר"

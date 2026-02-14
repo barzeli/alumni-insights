@@ -22,7 +22,7 @@ import {
   getCohort,
   isReleased,
 } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
@@ -259,7 +259,7 @@ export default function ReleasedStudents() {
               <CardContent>
                 <div ref={chartRef1}>
                   {studentData.cohortData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentData.cohortData}
                       dataKey="cohort"
                       valueLabel="מספר סטודנטים"
@@ -301,7 +301,7 @@ export default function ReleasedStudents() {
               <CardContent>
                 <div ref={chartRef2}>
                   {studentData.institutionData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentData.institutionData}
                       dataKey="institution"
                       valueLabel="מספר"
@@ -347,7 +347,7 @@ export default function ReleasedStudents() {
               <CardContent>
                 <div ref={chartRef3}>
                   {studentData.facultyData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentData.facultyData}
                       dataKey="faculty"
                       valueLabel="מספר"
@@ -393,7 +393,7 @@ export default function ReleasedStudents() {
               <CardContent>
                 <div ref={chartRef4}>
                   {studentData.yearData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentData.yearData}
                       dataKey="year"
                       valueLabel="מספר סטודנטים"

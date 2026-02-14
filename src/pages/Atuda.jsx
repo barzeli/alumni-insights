@@ -20,7 +20,7 @@ import {
   TableExportButton,
   PageExportButton,
 } from "../components/common/ExportButton";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import { useAtudaData } from "../hooks/useAtudaData";
 
@@ -169,7 +169,7 @@ export default function Atuda() {
               <CardContent>
                 <div ref={chartRef1}>
                   {atudaData.stageData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={atudaData.stageData}
                       dataKey="stage"
                       valueLabel="מספר עתודאים"
@@ -211,7 +211,7 @@ export default function Atuda() {
               <CardContent>
                 <div ref={chartRef2}>
                   {atudaData.cohortData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={atudaData.cohortData}
                       dataKey="cohort"
                       valueLabel="מספר עתודאים"

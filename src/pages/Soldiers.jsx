@@ -27,7 +27,7 @@ import {
   TableExportButton,
   PageExportButton,
 } from "../components/common/ExportButton";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 
 export default function Soldiers() {
@@ -223,7 +223,7 @@ export default function Soldiers() {
               <CardContent>
                 <div ref={chartRef2}>
                   {soldierData.roleTypeData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={soldierData.roleTypeData}
                       dataKey="role"
                       valueLabel="מספר"
@@ -369,7 +369,7 @@ export default function Soldiers() {
             <CardContent>
               <div ref={chartRef5}>
                 {soldierData.commandersData.length > 0 ? (
-                  <HorizontalBarChart
+                  <ReusableBarChart
                     data={soldierData.commandersData}
                     dataKey="cohort"
                     stacks={[
@@ -454,7 +454,7 @@ export default function Soldiers() {
               <CardContent>
                 <div ref={chartRef3}>
                   {soldierData.enlistmentData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={soldierData.enlistmentData}
                       dataKey="period"
                       valueLabel="מספר מתגייסים"
@@ -501,7 +501,7 @@ export default function Soldiers() {
               <CardContent>
                 <div ref={chartRef4}>
                   {soldierData.releaseData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={soldierData.releaseData}
                       dataKey="period"
                       valueLabel="מספר משתחררים"

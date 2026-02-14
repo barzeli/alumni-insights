@@ -17,7 +17,7 @@ import {
   TableExportButton,
   PageExportButton,
 } from "../components/common/ExportButton";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 
 export default function PreArmy() {
@@ -267,7 +267,7 @@ export default function PreArmy() {
               <CardContent>
                 <div ref={chartRef1}>
                   {malshabData.monthData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={malshabData.monthData}
                       dataKey="month"
                       valueLabel="מספר מלש״בים"
@@ -310,7 +310,7 @@ export default function PreArmy() {
               <CardContent>
                 <div ref={chartRef2}>
                   {malshabData.destinationData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={malshabData.destinationData}
                       dataKey="destination"
                       valueLabel="מספר"
@@ -356,7 +356,7 @@ export default function PreArmy() {
               <CardContent>
                 <div ref={chartRef3}>
                   {malshabData.cohortData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={malshabData.cohortData}
                       dataKey="cohort"
                       valueLabel="מספר מלש״בים"

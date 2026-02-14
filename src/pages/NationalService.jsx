@@ -12,7 +12,7 @@ import DataTable from "../components/common/DataTable";
 import GlobalFilters from "../components/common/GlobalFilters";
 import ChartInfoButton from "../components/charts/ChartInfoButton";
 import { useSurveyData } from "../hooks/useSurveyData";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import { parseDate as parseGlobalDate } from "../utils/dateUtils";
 import {
@@ -244,7 +244,7 @@ export default function NationalService() {
               <CardContent>
                 <div ref={chartRef1}>
                   {serviceData.startData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={serviceData.startData}
                       dataKey="period"
                       valueKey="count"
@@ -288,7 +288,7 @@ export default function NationalService() {
               <CardContent>
                 <div ref={chartRef2}>
                   {serviceData.endData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={serviceData.endData}
                       dataKey="period"
                       valueKey="count"

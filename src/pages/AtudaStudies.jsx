@@ -25,7 +25,7 @@ import {
   getCohort,
   getStatus,
 } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ReusablePieChart from "../components/charts/ReusablePieChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 
@@ -270,7 +270,7 @@ export default function AtudaStudies() {
               <CardContent>
                 <div ref={chartRef1}>
                   {studiesData.institutionData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studiesData.institutionData}
                       dataKey="institution"
                       valueLabel="מספר עתודאים"
@@ -355,7 +355,7 @@ export default function AtudaStudies() {
               <CardContent>
                 <div ref={chartRef3}>
                   {studiesData.yearData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studiesData.yearData}
                       dataKey="year"
                       valueLabel="מספר עתודאים"
@@ -396,7 +396,7 @@ export default function AtudaStudies() {
               <CardContent>
                 <div ref={chartRef4}>
                   {studiesData.cohortData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studiesData.cohortData}
                       dataKey="cohort"
                       valueLabel="מספר עתודאים"

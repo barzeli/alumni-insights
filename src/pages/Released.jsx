@@ -29,7 +29,7 @@ import {
   ChartExportButton,
   PageExportButton,
 } from "../components/common/ExportButton";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 
 export default function Released() {
   const { surveyData, hasSurveyData } = useSurveyData();
@@ -222,7 +222,7 @@ export default function Released() {
               <CardContent>
                 <div ref={chartRef1}>
                   {releasedData.cohortData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={releasedData.cohortData}
                       dataKey="cohort"
                       valueLabel="מספר משוחררים"

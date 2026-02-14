@@ -16,7 +16,7 @@ import {
   PageExportButton,
 } from "../components/common/ExportButton";
 import { getValue, getName, getCohort } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import StudyingSubNav from "../components/layout/StudyingSubNav";
 
@@ -221,7 +221,7 @@ export default function DegreeServiceStudents() {
               <CardContent>
                 <div ref={chartRef1}>
                   {studentsData.institutionData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentsData.institutionData}
                       dataKey="institution"
                       valueLabel="מספר"
@@ -258,7 +258,7 @@ export default function DegreeServiceStudents() {
               <CardContent>
                 <div ref={chartRef2}>
                   {studentsData.facultyData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={studentsData.facultyData}
                       dataKey="faculty"
                       valueLabel="מספר"
@@ -296,7 +296,7 @@ export default function DegreeServiceStudents() {
             <CardContent>
               <div ref={chartRef3}>
                 {studentsData.trackTypeData.length > 0 ? (
-                  <HorizontalBarChart
+                  <ReusableBarChart
                     data={studentsData.trackTypeData}
                     dataKey="trackType"
                     valueLabel="מספר"

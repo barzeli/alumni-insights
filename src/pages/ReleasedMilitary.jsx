@@ -22,7 +22,7 @@ import {
   getCohort,
   isReleased,
 } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
@@ -255,7 +255,7 @@ export default function ReleasedMilitary() {
               <CardContent>
                 <div ref={chartRef1}>
                   {militaryData.kevaData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.kevaData}
                       dataKey="cohort"
                       valueLabel="שירתו בקבע"
@@ -298,7 +298,7 @@ export default function ReleasedMilitary() {
               <CardContent>
                 <div ref={chartRef2} className="h-87.5">
                   {militaryData.pikudData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.pikudData}
                       dataKey="cohort"
                       stacks={[
@@ -348,7 +348,7 @@ export default function ReleasedMilitary() {
               <CardContent>
                 <div ref={chartRef3}>
                   {militaryData.roleNatureData.length > 0 ? (
-                    <HorizontalBarChart
+                    <ReusableBarChart
                       data={militaryData.roleNatureData}
                       dataKey="nature"
                       valueLabel="מספר"

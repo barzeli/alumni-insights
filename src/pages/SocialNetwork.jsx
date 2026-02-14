@@ -19,7 +19,7 @@ import { useSurveyData } from "../hooks/useSurveyData";
 
 import { getValue, getName } from "../utils/surveyDataHelpers";
 import { getCohortBarColors } from "../utils/colors";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import NetworkGraph from "../components/network/NetworkGraph";
 import ConnectionMatrix from "../components/network/ConnectionMatrix";
 import Heatmap from "../components/network/Heatmap";
@@ -381,7 +381,7 @@ function FamilyStatusByCohort({ data }) {
         <CardTitle className="text-lg">מצב משפחתי לפי מחזור</CardTitle>
       </CardHeader>
       <CardContent>
-        <HorizontalBarChart
+        <ReusableBarChart
           data={chartData.chartData}
           dataKey="cohort"
           stacks={chartData.statuses.map((status, index) => ({

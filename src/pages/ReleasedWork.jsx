@@ -22,7 +22,7 @@ import {
   getCohort,
   isReleased,
 } from "../utils/surveyDataHelpers";
-import HorizontalBarChart from "../components/charts/HorizontalBarChart";
+import ReusableBarChart from "../components/charts/ReusableBarChart";
 import ViewContactsButton from "../components/common/ViewContactsButton";
 import ReleasedSubNav from "../components/layout/ReleasedSubNav";
 
@@ -150,7 +150,7 @@ export default function ReleasedWork() {
             <CardContent>
               <div ref={chartRef1}>
                 {workData.workFieldData.length > 0 ? (
-                  <HorizontalBarChart
+                  <ReusableBarChart
                     data={workData.workFieldData}
                     dataKey="field"
                     valueLabel="מספר עובדים"
