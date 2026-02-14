@@ -272,8 +272,6 @@ export default function Overview() {
                   height={400}
                   outerRadius={80}
                   innerRadius={40}
-                  labelFontSize={18}
-                  labelFontWeight="bold"
                   valueLabel="מספר"
                   showPercentage={true}
                   filterKey="military_status"

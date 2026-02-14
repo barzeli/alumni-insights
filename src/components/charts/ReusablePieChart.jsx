@@ -1,42 +1,6 @@
 import { useState } from "react";
-import { PieChart, Pie, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, ResponsiveContainer } from "recharts";
 import ChartTooltip from "./ChartTooltip";
-
-// Simple Pie Label
-function SimplePieLabel({
-  cx,
-  cy,
-  midAngle,
-  outerRadius,
-  name,
-  value,
-  fontSize = 12,
-  fontWeight = "normal",
-}) {
-  const RADIAN = Math.PI / 180;
-  const radius = outerRadius + 45;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="#374151"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-      style={{
-        fontSize,
-        fontWeight,
-        paintOrder: "stroke",
-        stroke: "white",
-        strokeWidth: 3,
-      }}
-    >
-      {name} ({value})
-    </text>
-  );
-}
 
 export default function ReusablePieChart({
   data = [],
@@ -48,15 +12,11 @@ export default function ReusablePieChart({
   outerRadius = 80,
   innerRadius = 40,
   paddingAngle = 5,
-  labelFontSize = 14,
-  labelFontWeight = "bold",
   valueLabel = "כמות",
   showPercentage = true,
   filterKey = null,
-  showLegend = false,
   stroke,
   strokeWidth = 2,
-  labelLine = true,
 }) {
   const [selectedData, setSelectedData] = useState(null);
   const total = data.reduce((sum, item) => sum + (item[dataKey] || 0), 0);
@@ -98,24 +58,17 @@ export default function ReusablePieChart({
   }));
 
   return (
-    <div style={{ height }}>
+    <div style={{ height, direction: "ltr" }}>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
           <Pie
             data={coloredData}
             cx="50%"
             cy="50%"
-            labelLine={labelLine}
-            label={(props) => (
-              <SimplePieLabel
-                {...props}
-                outerRadius={props.outerRadius + 40}
-                name={props[nameKey] || props.name}
-                value={props[dataKey] || props.value}
-                fontSize={labelFontSize}
-                fontWeight={labelFontWeight}
-              />
-            )}
+            labelLine={false}
+            label={(props) =>
+              `${props[nameKey] || props.name} (${props[dataKey] || props.value})`
+            }
             outerRadius={outerRadius}
             innerRadius={innerRadius}
             fill="#8884d8"
@@ -126,9 +79,6 @@ export default function ReusablePieChart({
             strokeWidth={strokeWidth}
             stroke={stroke}
           />
-          {showLegend && (
-            <Legend verticalAlign="bottom" height={36} iconType="circle" />
-          )}
         </PieChart>
       </ResponsiveContainer>
 

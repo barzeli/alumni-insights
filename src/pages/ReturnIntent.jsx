@@ -252,10 +252,8 @@ export default function ReturnIntent() {
                       innerRadius={60}
                       outerRadius={100}
                       paddingAngle={2}
-                      labelLine={false}
                       stroke="#fff"
                       strokeWidth={1}
-                      showLegend
                       showPercentage={false}
                       height="100%"
                     />
@@ -298,10 +296,8 @@ export default function ReturnIntent() {
                       innerRadius={60}
                       outerRadius={100}
                       paddingAngle={2}
-                      labelLine={false}
                       stroke="#fff"
                       strokeWidth={1}
-                      showLegend
                       showPercentage={false}
                       height="100%"
                     />
